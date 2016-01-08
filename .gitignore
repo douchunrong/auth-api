@@ -19,5 +19,7 @@ db/*.sqlite3
 log/*.log
 tmp
 
+/.byebug_history
 /.powenv
 /.rspec
+/bin
