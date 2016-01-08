@@ -16,6 +16,15 @@ group :development, :test do
 end
 
 group :test do
+  gem 'byebug'
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'factory_girl_rails'
+  gem 'rack-test'
+  gem 'rspec-rails', '~> 3.0.0'
+  gem 'rspec-collection_matchers'
+  gem 'spring-commands-rspec'
+  gem 'test-unit'
   gem 'turn', :require => false
 end
 
