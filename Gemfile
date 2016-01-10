@@ -10,6 +10,7 @@ gem 'validate_email'
 gem 'fb_graph'
 gem 'rack-oauth2'
 gem 'openid_connect'
+gem 'devise'
 
 group :development, :test do
   gem 'sqlite3'

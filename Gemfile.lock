@@ -32,6 +32,7 @@ GEM
     ansi (1.5.0)
     arel (3.0.3)
     attr_required (1.0.0)
+    bcrypt (3.1.10)
     bindata (2.1.0)
     builder (3.0.4)
     byebug (8.2.1)
@@ -45,6 +46,13 @@ GEM
       activerecord (>= 2.0.2)
       activesupport (>= 2.0.2)
     database_cleaner (1.5.1)
+    devise (3.5.3)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 3.2.6, < 5)
+      responders
+      thread_safe (~> 0.1)
+      warden (~> 1.2.3)
     diff-lcs (1.2.5)
     erubis (2.7.0)
     factory_girl (4.5.0)
@@ -92,6 +100,7 @@ GEM
       validate_email
       validate_url
       webfinger (>= 1.0.1)
+    orm_adapter (0.5.0)
     polyamorous (1.1.0)
       activerecord (>= 3.0)
     polyglot (0.3.5)
@@ -127,6 +136,8 @@ GEM
     rake (10.4.2)
     rdoc (3.12.2)
       json (~> 1.4)
+    responders (1.1.2)
+      railties (>= 3.2, < 4.2)
     rspec-collection_matchers (1.1.2)
       rspec-expectations (>= 2.99.0.beta1)
     rspec-core (3.0.4)
@@ -168,6 +179,7 @@ GEM
     test-unit (3.0.8)
       power_assert
     thor (0.19.1)
+    thread_safe (0.3.5)
     tilt (1.4.1)
     treetop (1.4.15)
       polyglot
@@ -183,6 +195,8 @@ GEM
     validate_url (1.0.2)
       activemodel (>= 3.0.0)
       addressable
+    warden (1.2.4)
+      rack (>= 1.0)
     webfinger (1.0.1)
       activesupport
       httpclient (>= 2.4)
@@ -198,6 +212,7 @@ DEPENDENCIES
   capybara
   constant_cache
   database_cleaner
+  devise
   factory_girl_rails
   fb_graph
   html5_validators
