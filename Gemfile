@@ -21,6 +21,7 @@ group :test do
   gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem 'launchy'
   gem 'rack-test'
   gem 'rspec-rails', '~> 3.0.0'
   gem 'rspec-collection_matchers'
