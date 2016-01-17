@@ -17,9 +17,11 @@ tmtags
 .bundle
 db/*.sqlite3
 log/*.log
+tags
 tmp
 
 /.byebug_history
 /.powenv
 /.rspec
 /bin
+/config/projections.json
