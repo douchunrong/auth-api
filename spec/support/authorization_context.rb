@@ -18,12 +18,22 @@ shared_context 'authorization' do
   def request_authorization(attrs = {})
     default_attrs = { response_type: 'code' }
     params = default_attrs.merge attrs.slice(
-      :client_id, :redirect_uri, :response_type
+      :client_id, :nonce, :redirect_uri, :response_type, :scope
     )
-    get new_authorization_path, params
+    get new_authorization2_path, params
   end
 
   def authorization_should_be_approved
     expect(last_response).to be_redirect
+    code = fetch_auth_code last_response.headers['Location']
+    expect(code).to be_valid_oauth_code_of(req_params)
+  end
+
+  def user_should_see_approve_form_of(req_params)
+    expect(last_response).to be_redirect
+    redirect_uri = UriHelper.uri_to_hash last_response.headers['Location']
+    approve_form_uri = UriHelper.uri_to_hash new_authorization2_url
+    byebug
+    expect(redirect_uri.except(:query)).to eq(approve_form_uri.except(:query))
   end
 end

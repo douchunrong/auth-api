@@ -21,12 +21,18 @@ feature 'Authorization' do
       user, * = users_exist
       user_is_in_login_status_as user
 
-      request_authorization(
+      req_params = {
         client_id: client.identifier,
-        redirect_uri: client.redirect_uri
-      )
+        nonce: "nonce-#{client.identifier}",
+        redirect_uri: client.redirect_uri,
+        response_type: 'code',
+        scope: 'openid',
+        state: "state-#{client.identifier}"
+      }
 
-      authorization_should_be_approved
+      request_authorization req_params
+
+      user_should_see_approve_form_of req_params
     end
   end
 
