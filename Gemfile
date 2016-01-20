@@ -13,11 +13,11 @@ gem 'openid_connect'
 gem 'devise'
 
 group :development, :test do
+  gem 'byebug'
   gem 'sqlite3'
 end
 
 group :test do
-  gem 'byebug'
   gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
