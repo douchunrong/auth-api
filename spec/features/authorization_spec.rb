@@ -16,7 +16,7 @@ feature 'Authorization' do
   end
 
   context 'User is in login status' do
-    scenario 'Authorization request is approved' do
+    scenario 'Authorization request prompt approve form' do
       client, * = registered_clients_exist
       user, * = users_exist
       user_is_in_login_status_as user
@@ -24,14 +24,14 @@ feature 'Authorization' do
       req_params = {
         client_id: client.identifier,
         nonce: "nonce-#{client.identifier}",
-        redirect_uri: client.redirect_uri,
+        redirect_uri: client.redirect_uris.first,
         response_type: 'code',
         scope: 'openid',
         state: "state-#{client.identifier}"
       }
-
       request_authorization req_params
 
+      skip
       user_should_see_approve_form_of req_params
     end
   end

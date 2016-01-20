@@ -12,6 +12,7 @@ ConnectOp::Application.routes.draw do
     resource :facebook, only: :show
     resource :google,   only: [:show, :new]
     resource :client,   only: :create
+    resource :parti,    only: :show
   end
 
   root to: 'top#index'

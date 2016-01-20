@@ -17,6 +17,6 @@ shared_context 'user' do
   def user_should_see_login_form
     expect(last_response).to be_redirect
     follow_redirect!
-    expect(last_request.url).to eq 'http://example.org/'
+    expect(last_request.url).to eq root_url
   end
 end

@@ -2,6 +2,7 @@ class Account < ActiveRecord::Base
   has_one :facebook, class_name: 'Connect::Facebook'
   has_one :google,   class_name: 'Connect::Google'
   has_one :fake,     class_name: 'Connect::Fake'
+  has_one :parti,    class_name: 'Connect::Parti'
   has_many :clients
   has_many :access_tokens
   has_many :authorizations
