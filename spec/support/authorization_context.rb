@@ -23,13 +23,25 @@ shared_context 'authorization' do
     visit new_authorization_path(params)
   end
 
-  def authorization_should_be_approved
-    expect(last_response).to be_redirect
-    code = fetch_auth_code last_response.headers['Location']
-    expect(code).to be_valid_oauth_code_of(req_params)
+  def user_should_see_approve_form
+    expect(page).to have_button('approve')
   end
 
-  def user_should_see_approve_form_of(req_params)
-    expect(page).to have_button('approve')
+  def user_is_at_authorization_approval_form(req_params)
+    request_authorization_code_by_user req_params
+    user_should_see_approve_form
+  end
+
+  def approve_authorization_request_by_user
+    user_should_see_approve_form
+    do_not_follow_redirect do
+      click_button 'approve'
+    end
+  end
+
+  def user_should_be_redirected_with_authorization_code_of(req_params)
+    expect([301, 302, 303, 307]).to be_include page.status_code
+    code = fetch_auth_code page.response_headers['Location']
+    expect(code).to be_valid_oauth_code_of(req_params)
   end
 end

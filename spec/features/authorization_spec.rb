@@ -33,11 +33,31 @@ feature 'Authorization' do
       }
       request_authorization_code_by_user req_params
 
-      user_should_see_approve_form_of req_params
+      user_should_see_approve_form
+    end
+
+    scenario 'User approves authorization request then redirected with authorization code' do
+      client, * = registered_clients_exist
+      user, * = users_exist
+      user_is_in_parti_login_status_as user
+
+      req_params = {
+        client_id: client.identifier,
+        nonce: "nonce-#{client.identifier}",
+        redirect_uri: client.redirect_uris.first,
+        response_type: 'code',
+        scope: 'openid',
+        state: "state-#{client.identifier}"
+      }
+      user_is_at_authorization_approval_form req_params
+
+      approve_authorization_request_by_user
+
+      user_should_be_redirected_with_authorization_code_of req_params
     end
   end
 
-  scenario 'User creates fake account then redirected with authorization_code' do
+  scenario 'User creates fake account then redirected with authorization code' do
     client, * = registered_clients_exist
     user_is_not_in_login_status
 
@@ -58,7 +78,7 @@ feature 'Authorization' do
       click_button 'approve'
     end
 
-    expect(page.status_code).to eq(302)
+    expect([301, 302, 303, 307]).to be_include page.status_code
     expect(page.response_headers['Location'])
       .to be_valid_oauth_auth_resp_url_of(auth_req_url)
 
