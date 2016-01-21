@@ -14,6 +14,8 @@ gem 'devise'
 
 group :development, :test do
   gem 'byebug'
+  gem 'pry'
+  gem 'rack_session_access'
   gem 'sqlite3'
 end
 

@@ -1,5 +1,4 @@
 shared_context 'helper' do
-
   def do_not_follow_redirect &block
     begin
       options = page.driver.instance_variable_get(:@options)
@@ -18,5 +17,4 @@ shared_context 'helper' do
     end
     attrs_set
   end
-
 end

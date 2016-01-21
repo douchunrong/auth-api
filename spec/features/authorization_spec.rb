@@ -4,22 +4,24 @@ feature 'Authorization' do
   include_context 'user'
 
   context 'User is not in login status' do
-    scenario 'Authorization request prompts login form' do
+    scenario 'User requests authorization code then sess login form' do
       client, * = registered_clients_exist
       user_is_not_in_login_status
-      request_authorization(
+
+      request_authorization_code_by_user(
         client_id: client.identifier,
         redirect_uri: client.redirect_uri
       )
+
       user_should_see_login_form
     end
   end
 
-  context 'User is in login status' do
-    scenario 'Authorization request prompt approve form' do
+  context 'User is in parti login status' do
+    scenario 'User requests authorization code then sees approval form' do
       client, * = registered_clients_exist
       user, * = users_exist
-      user_is_in_login_status_as user
+      user_is_in_parti_login_status_as user
 
       req_params = {
         client_id: client.identifier,
@@ -29,15 +31,15 @@ feature 'Authorization' do
         scope: 'openid',
         state: "state-#{client.identifier}"
       }
-      request_authorization req_params
+      request_authorization_code_by_user req_params
 
-      skip
       user_should_see_approve_form_of req_params
     end
   end
 
-  scenario 'connect/fakes#create' do
+  scenario 'User creates fake account then redirected with authorization_code' do
     client, * = registered_clients_exist
+    user_is_not_in_login_status
 
     req_params = {
       client_id: client.identifier,

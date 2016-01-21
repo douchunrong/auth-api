@@ -15,12 +15,12 @@ shared_context 'authorization' do
     end
   end
 
-  def request_authorization(attrs = {})
+  def request_authorization_code_by_user(attrs = {})
     default_attrs = { response_type: 'code' }
     params = default_attrs.merge attrs.slice(
       :client_id, :nonce, :redirect_uri, :response_type, :scope
     )
-    get new_authorization_path, params
+    visit new_authorization_path(params)
   end
 
   def authorization_should_be_approved
@@ -30,9 +30,6 @@ shared_context 'authorization' do
   end
 
   def user_should_see_approve_form_of(req_params)
-    expect(last_response).to be_redirect
-    redirect_uri = UriHelper.uri_to_hash last_response.headers['Location']
-    approve_form_uri = UriHelper.uri_to_hash new_authorization_url
-    expect(redirect_uri.except(:query)).to eq(approve_form_uri.except(:query))
+    expect(page).to have_button('approve')
   end
 end
