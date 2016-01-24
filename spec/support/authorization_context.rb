@@ -1,5 +1,7 @@
 shared_context 'authorization' do
+  include_context 'client'
   include_context 'helper'
+  include_context 'user'
 
   def authorizations_exist(attrs_set = [{}], **options)
     attrs_defaults = { scopes: [] }
@@ -43,5 +45,26 @@ shared_context 'authorization' do
     expect([301, 302, 303, 307]).to be_include page.status_code
     code = fetch_auth_code page.response_headers['Location']
     expect(code).to be_valid_oauth_code_of(req_params)
+  end
+
+  def authorization_is_granted
+    user, * = users_exist
+    client_is_in_parti_login_status_as user
+    client, * = registered_clients_exist
+    post authorizations_path(
+        client_id: client.identifier,
+        nonce: "nonce-#{client.identifier}",
+        redirect_uri: client.redirect_uris.first,
+        response_type: 'code',
+        scope: 'openid',
+        state: "state-#{client.identifier}",
+        approve: true
+    )
+    expect(last_response).to be_redirect
+    query = UriHelper.uri_to_hash(last_response.headers['location'])[:query]
+    URI::decode_www_form(query)
+      .to_h
+      .symbolize_keys
+      .merge client: client
   end
 end

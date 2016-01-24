@@ -5,3 +5,4 @@ Scope.create [
   {name: 'address'},
   {name: 'phone'}
 ]
+Scope.caches_constants unless defined? Scope::OPENID
