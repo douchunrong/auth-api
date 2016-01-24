@@ -18,4 +18,11 @@ shared_context 'token' do
     expect(resp['expires_in']).not_to be_blank
     expect(resp['token_type']).to eq('bearer')
   end
+
+  def token_is_granted_for(authorization)
+    request_token authorization
+    expect(last_response).to be_ok
+    JSON.parse(last_response.body)
+      .symbolize_keys
+  end
 end

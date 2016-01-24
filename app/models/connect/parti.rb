@@ -1,5 +1,6 @@
 class Connect::Parti < ActiveRecord::Base
   belongs_to :account
+  belongs_to :user
 
   def userinfo
     OpenIDConnect::ResponseObject::UserInfo.new(

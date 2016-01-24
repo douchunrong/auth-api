@@ -14,7 +14,7 @@ class Account < ActiveRecord::Base
   validates :identifier, presence: true, uniqueness: true
 
   def to_response_object(access_token)
-    userinfo = (google || facebook || fake).userinfo
+    userinfo = (google || facebook || fake || parti).userinfo
     unless access_token.accessible?(Scope::PROFILE)
       userinfo.all_attributes.each do |attribute|
         userinfo.send("#{attribute}=", nil) unless access_token.accessible?(attribute)
