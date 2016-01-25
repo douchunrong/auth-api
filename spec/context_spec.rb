@@ -1,3 +1,21 @@
+describe 'user_exists' do
+  include_context 'user'
+
+  it 'returns User' do
+    expect( user_exists ).to be_a User
+  end
+
+  it 'create User with email' do
+    user = user_exists(email: 'valid@email.com')
+    expect( user.email ).to eq('valid@email.com')
+  end
+
+  it 'create User with password' do
+    user = user_exists(password: 'any-string')
+    expect( user.valid_password?('any-string') ).to be true
+  end
+end
+
 describe 'users_exist' do
   include_context 'user'
 

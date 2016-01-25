@@ -25,17 +25,13 @@ shared_context 'authorization' do
     visit new_authorization_path(params)
   end
 
-  def user_should_see_approve_form
-    expect(page).to have_button('approve')
-  end
-
   def user_is_at_authorization_approval_form(req_params)
     request_authorization_code_by_user req_params
-    user_should_see_approve_form
+    user_should_be_asked_to_approve_auth_code_request
   end
 
   def approve_authorization_request_by_user
-    user_should_see_approve_form
+    user_should_be_asked_to_approve_auth_code_request
     do_not_follow_redirect do
       click_button 'approve'
     end
@@ -66,5 +62,51 @@ shared_context 'authorization' do
       .to_h
       .symbolize_keys
       .merge client: client
+  end
+
+  def authorization_is_granted_for(user, attrs={})
+    client_is_in_parti_login_status_as user
+    client, * = registered_clients_exist
+    default_params = {
+        client_id: client.identifier,
+        nonce: "nonce-#{client.identifier}",
+        redirect_uri: client.redirect_uris.first,
+        response_type: 'code',
+        scope: 'openid',
+        state: "state-#{client.identifier}",
+        approve: true
+    }
+    post authorizations_path default_params.merge(attrs)
+
+    expect(last_response).to be_redirect
+    query = UriHelper.uri_to_hash(last_response.headers['location'])[:query]
+    URI::decode_www_form(query)
+      .to_h
+      .symbolize_keys
+      .merge client: client
+  end
+
+  def user_is_asked_to_parti_login_after_requesting_auth_code
+    client, * = registered_clients_exist
+    user_is_not_in_login_status
+
+    request_authorization_code_by_user(
+      client_id: client.identifier,
+      redirect_uri: client.redirect_uri
+    )
+    click_link 'Parti sign in'
+
+    user_should_be_asked_parti_sign_in
+  end
+
+  def answer_login_request_by_user(user)
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
+    click_button 'Log in'
+  end
+
+  def user_should_be_asked_to_approve_auth_code_request
+    expect(page.current_path).to eq(new_authorization_path)
+    expect(page).to have_button('approve')
   end
 end

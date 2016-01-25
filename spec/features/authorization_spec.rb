@@ -13,7 +13,16 @@ feature 'Authorization' do
         redirect_uri: client.redirect_uri
       )
 
-      user_should_see_login_form
+      user_should_be_asked_to_login
+    end
+
+    scenario 'User login to parti after request authorization code then sees approval form' do
+      user = user_exists
+      user_is_asked_to_parti_login_after_requesting_auth_code
+
+      answer_login_request_by_user user
+
+      user_should_be_asked_to_approve_auth_code_request
     end
   end
 
@@ -33,7 +42,7 @@ feature 'Authorization' do
       }
       request_authorization_code_by_user req_params
 
-      user_should_see_approve_form
+      user_should_be_asked_to_approve_auth_code_request
     end
 
     scenario 'User approves authorization request then redirected with authorization code' do
