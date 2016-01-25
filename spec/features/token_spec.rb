@@ -15,7 +15,7 @@ feature 'Authorization' do
   scenario 'Client receives userinfo using access_token' do
     user = user_exists email: 'one@email.com'
     authorization = authorization_is_granted_for user,
-      scope: 'openid email'
+      scope: 'openid profile email'
     token = token_is_granted_for authorization
 
     request_user_info token

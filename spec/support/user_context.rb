@@ -18,7 +18,7 @@ shared_context 'user' do
 
   def user_is_in_parti_login_status_as(user)
     login_as(user, :scope => :user)
-    authenticate Connect::Parti.authenticate
+    authenticate Connect::Parti.authenticate(user)
     logged_in!
     page.set_rack_session session
   end

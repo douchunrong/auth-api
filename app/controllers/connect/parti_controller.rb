@@ -3,7 +3,7 @@ class Connect::PartiController < ApplicationController
   before_filter :authenticate_user!
 
   def show
-    authenticate Connect::Parti.authenticate
+    authenticate Connect::Parti.authenticate(current_user)
     logged_in!
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160125100238) do
+ActiveRecord::Schema.define(:version => 20160125141033) do
 
   create_table "access_token_request_objects", :force => true do |t|
     t.integer  "access_token_id"
@@ -120,7 +120,10 @@ ActiveRecord::Schema.define(:version => 20160125100238) do
     t.integer  "account_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "user_id"
   end
+
+  add_index "connect_parti", ["user_id"], :name => "index_connect_parti_on_user_id"
 
   create_table "id_token_request_objects", :force => true do |t|
     t.integer  "id_token_id"

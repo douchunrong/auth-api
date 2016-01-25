@@ -6,7 +6,7 @@ shared_context 'user_info' do
 
   def userinfo_should_be_received(attrs)
     expect(last_response).to be_ok
-    resp = JSON.parse(last_response.body)
+    resp = JSON.parse(last_response.body).symbolize_keys
     expect(resp).to include(attrs)
   end
 end
