@@ -1,9 +1,0 @@
-development: &defaults
-  issuer: http://op.dev
-
-test:
-  <<: *defaults
-
-production:
-  <<: *defaults
-  issuer: https://connect-op.herokuapp.com
