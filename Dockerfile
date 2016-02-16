@@ -4,7 +4,7 @@ RUN mkdir -p /parti/auth-api
 WORKDIR /parti/auth-api
 
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler && bundle install --jobs 20 --retry 5
+RUN gem install bundler && bundle install --deployment --jobs 20 --retry 5
 
 COPY . ./
 
