@@ -20,6 +20,7 @@ before_install:
 
 after_success:
   - export APP_VERSION=`git describe  --tags --long || echo ${TRAVIS_COMMIT::12}`
+  - echo "building $DOCKER_REPO:$APP_VERSION"
   - docker build -t $DOCKER_REPO:$APP_VERSION .
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - docker tag $DOCKER_REPO:$APP_VERSION $DOCKER_REPO:travis-$TRAVIS_BUILD_NUMBER
