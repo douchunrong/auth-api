@@ -89,6 +89,7 @@ GEM
       hashie (>= 1.2, < 4)
       rack (>= 1.0, < 3)
     orm_adapter (0.5.0)
+    pg (0.18.4)
     puma (2.16.0)
     rack (2.0.0.alpha)
       json
@@ -170,6 +171,7 @@ DEPENDENCIES
   factory_girl_rails
   health_check
   omniauth (>= 1.0.0)
+  pg
   puma
   rack-test
   rails (= 5.0.0.beta2)
