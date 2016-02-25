@@ -3,7 +3,12 @@ source 'https://rubygems.org'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'devise', '4.0.0.rc1'
+gem 'devise_token_auth', git: 'https://github.com/lynndylanhurley/devise_token_auth.git'
+
 gem 'health_check'
+
+gem 'omniauth', '>= 1.0.0'
 
 # Use Puma as the app server
 gem 'puma'
