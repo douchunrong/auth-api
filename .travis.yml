@@ -18,10 +18,18 @@ services:
 before_install:
   - gem install bundler
 
-after_success:
+before_script:
   - export APP_VERSION=`git describe  --tags --long || echo ${TRAVIS_COMMIT::12}`
-  - echo "building $DOCKER_REPO:$APP_VERSION"
-  - docker build -t ${DOCKER_REPO}:${APP_VERSION}-travis .
+  - export DOCKER_IMAGE="$DOCKER_REPO:$APP_VERSION-travis"
+  - echo "building $DOCKER_IMAGE"
+  - docker build -t $DOCKER_IMAGE .
+  - docker run -d --name db postgres:9.4
+  - docker run -e RAILS_ENV=test -e DB_HOST=db -e DB_PORT=5432 -e DB_USER=postgres --link db $DOCKER_IMAGE bin/rake db:setup
+
+script:
+  - docker run -e DB_HOST=db -e DB_PORT=5432 -e DB_USER=postgres --link db $DOCKER_IMAGE bin/rake spec
+
+after_success:
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - docker push $DOCKER_REPO
 
