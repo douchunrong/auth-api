@@ -1,4 +1,4 @@
-require_relative 'user_context.rb'
+require 'rails_helper.rb'
 
 describe 'user_exists' do
   it 'creates user' do
