@@ -53,6 +53,7 @@ GEM
     builder (3.2.2)
     byebug (8.2.2)
     concurrent-ruby (1.0.0)
+    database_cleaner (1.5.1)
     devise (4.0.0.rc1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -163,6 +164,7 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
+  database_cleaner
   devise (= 4.0.0.rc1)
   devise_token_auth!
   factory_girl_rails
