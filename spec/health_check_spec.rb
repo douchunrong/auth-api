@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe '/check'  do
+describe '/check', smoke: true do
   it 'responds ok' do
     get '/health_check'
     expect(last_response).to be_ok
