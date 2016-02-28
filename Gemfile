@@ -34,6 +34,7 @@ gem 'redis', '~> 3.0'
 group :development, :test do
   gem 'byebug'
   gem 'factory_girl_rails'
+  gem 'faraday'
   gem 'rspec-rails', '3.1.0'
 end
 
