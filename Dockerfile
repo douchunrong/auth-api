@@ -10,4 +10,4 @@ COPY . ./
 
 EXPOSE 3030
 
-CMD bundle exec rails server -p 3030 -b 0.0.0.0
+CMD (test -f /volume/shared/is_leader && bin/rake db:migrate); bin/rails server -p 3030 -b 0.0.0.0
