@@ -52,6 +52,7 @@ GEM
     bcrypt (3.1.10)
     builder (3.2.2)
     byebug (8.2.2)
+    coderay (1.1.1)
     concurrent-ruby (1.0.0)
     database_cleaner (1.5.1)
     devise (4.0.0.rc1)
@@ -93,6 +94,10 @@ GEM
       rack (>= 1.0, < 3)
     orm_adapter (0.5.0)
     pg (0.18.4)
+    pry (0.10.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     puma (2.16.0)
     rack (2.0.0.alpha)
       json
@@ -144,6 +149,8 @@ GEM
       rspec-mocks (~> 3.1.0)
       rspec-support (~> 3.1.0)
     rspec-support (3.1.2)
+    securecompare (1.0.0)
+    slop (3.6.0)
     spring (1.6.3)
     sprockets (3.5.2)
       concurrent-ruby (~> 1.0)
@@ -176,6 +183,7 @@ DEPENDENCIES
   health_check
   omniauth (>= 1.0.0)
   pg
+  pry
   puma
   rack-test
   rails (= 5.0.0.beta2)
