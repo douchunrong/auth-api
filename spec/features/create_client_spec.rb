@@ -1,7 +1,7 @@
 require 'rails_helper.rb'
 
 describe 'Create client' do
-  it 'succeeds to create client' do
+  it 'creates client' do
     user = user_exists
     token = token_is_granted_for user
 

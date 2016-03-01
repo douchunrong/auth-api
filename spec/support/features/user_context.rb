@@ -8,5 +8,9 @@ FactoryGirl.define do
 end
 
 def user_exists()
-  FactoryGirl.create(:user)
+  user = FactoryGirl.create(:user)
+  account = Account.new
+  account.build_parti user: user
+  account.save!
+  user
 end

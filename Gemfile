@@ -12,6 +12,8 @@ gem 'health_check'
 
 gem 'omniauth', '>= 1.0.0'
 
+gem 'openid_connect'
+
 gem 'pg'
 
 # Use Puma as the app server
