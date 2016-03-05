@@ -1,27 +1,21 @@
 class ClientsController < ApplicationController
-  before_action :authenticate
+  before_action :require_access_token
 
   def create
-    parti = ConnectParti.find_by! user: current_user
-    account = Account.joins(:parti).find_by!(connect_parti: { id: parti.id })
+    unless current_token.scopes.map(&:name).include?(Scope::CREATE_CLIENT)
+      raise Rack::OAuth2::Server::Resource::Bearer::Unauthorized.new
+    end
+
+    current_token.account
     client = Client.new(client_params)
-    client.account = account
+    client.account = current_token.account
     client.save!
-  end
-
-  def authenticate
-    auth_header = request.headers['Authorization']
-    user_id = /Bearer temp-free-pass-for-(\d+)/.match(auth_header)[1]
-    @current_user = User.find user_id
-  end
-
-  def current_user
-    @current_user
+    render status: 201, json: client
   end
 
   private
 
   def client_params
-    params.require(:client).permit(redirect_uris: [])
+    params.require(:client).permit(:name, { redirect_uris: [] })
   end
 end

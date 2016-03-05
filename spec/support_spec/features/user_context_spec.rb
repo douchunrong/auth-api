@@ -1,6 +1,8 @@
 require 'rails_helper.rb'
 
 describe 'user_exists' do
+  include_context 'user'
+
   it 'creates user' do
     expect {
       user_exists()

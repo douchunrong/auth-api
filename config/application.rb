@@ -26,5 +26,12 @@ module AuthApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    config.autoload_paths += %W(#{config.root}/lib)
+
+    config.middleware.use Rack::OAuth2::Server::Resource::Bearer, 'OpenID Connect' do |req|
+      AccessToken.valid.find_by(token: req.access_token) ||
+      req.invalid_token!
+    end
   end
 end

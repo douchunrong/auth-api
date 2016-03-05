@@ -11,10 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229152949) do
+ActiveRecord::Schema.define(version: 20160305110403) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "access_tokens", force: :cascade do |t|
+    t.integer  "account_id"
+    t.integer  "client_id"
+    t.string   "token",      null: false
+    t.datetime "expires_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_access_tokens_on_account_id", using: :btree
+    t.index ["client_id"], name: "index_access_tokens_on_client_id", using: :btree
+    t.index ["token"], name: "index_access_tokens_on_token", unique: true, using: :btree
+  end
+
+  create_table "access_tokens_scopes", id: false, force: :cascade do |t|
+    t.integer "access_token_id", null: false
+    t.integer "scope_id",        null: false
+  end
 
   create_table "accounts", force: :cascade do |t|
   end
@@ -22,7 +39,18 @@ ActiveRecord::Schema.define(version: 20160229152949) do
   create_table "clients", force: :cascade do |t|
     t.integer "account_id"
     t.string  "redirect_uris"
+    t.string  "identifier",    null: false
+    t.string  "secret",        null: false
+    t.string  "name",          null: false
     t.index ["account_id"], name: "index_clients_on_account_id", using: :btree
+    t.index ["identifier"], name: "index_clients_on_identifier", unique: true, using: :btree
+  end
+
+  create_table "connect_internals", force: :cascade do |t|
+    t.integer "account_id"
+    t.string  "name",       null: false
+    t.index ["account_id"], name: "index_connect_internals_on_account_id", using: :btree
+    t.index ["name"], name: "index_connect_internals_on_name", unique: true, using: :btree
   end
 
   create_table "connect_parti", force: :cascade do |t|
@@ -30,6 +58,13 @@ ActiveRecord::Schema.define(version: 20160229152949) do
     t.integer "user_id"
     t.index ["account_id"], name: "index_connect_parti_on_account_id", using: :btree
     t.index ["user_id"], name: "index_connect_parti_on_user_id", using: :btree
+  end
+
+  create_table "scopes", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_scopes_on_name", unique: true, using: :btree
   end
 
   create_table "users", force: :cascade do |t|

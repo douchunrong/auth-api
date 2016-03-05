@@ -4,5 +4,6 @@ Rails.application.routes.draw do
 
   scope(path: '/v1') do
     resources :clients, only: :create
+    post 'tokens', to: proc { |env| TokenEndpoint.new.call(env) }
   end
 end

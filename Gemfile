@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'active_model_serializers', '0.10.0.rc4'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -37,6 +39,7 @@ group :development, :test do
   gem 'byebug'
   gem 'factory_girl_rails'
   gem 'faraday'
+  gem 'json_spec'
   gem 'pry'
   gem 'rspec-rails', '3.1.0'
 end
