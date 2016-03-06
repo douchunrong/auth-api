@@ -1,4 +1,4 @@
-class ClientsController < ApplicationController
+class V1::ClientsController < ApplicationController
   before_action :require_access_token
 
   def create
