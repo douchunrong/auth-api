@@ -14,7 +14,11 @@ unless account
 end
 
 unless Client.find_by account: account, name: Client::PARTI_AUTH_API_TEST_CLIENT_NAME
-  Client.create! account: account, name: Client::PARTI_AUTH_API_TEST_CLIENT_NAME
+  Client.create!(
+    account: account,
+    name: Client::PARTI_AUTH_API_TEST_CLIENT_NAME,
+    redirect_uris: ''
+  )
 end
 
 ['openid', 'profile', 'email', 'create_client'].each do |name|

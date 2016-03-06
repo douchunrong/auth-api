@@ -10,7 +10,6 @@ class TokenEndpoint
       ) || req.invalid_client!
       case req.grant_type
       when :password
-        byebug
         # account = find_account req.username, req.password || req.invalid_grant!
         # account.access_token.create(client: client).to_bearer_token(:with_refresh_token)
       else

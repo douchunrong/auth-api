@@ -50,6 +50,7 @@ group :development do
 end
 
 group :test do
+  gem 'email_spec'
   gem 'rack-test'
 end
 
