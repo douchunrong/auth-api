@@ -1,4 +1,8 @@
 shared_context 'client' do
+  def client_exists(attrs = {})
+    FactoryGirl.create(:client, attrs)
+  end
+
   def create_client(params)
     client_params = params.slice(:redirect_uris, :name)
     header 'Authorization', "Bearer #{params[:token]}"

@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160305110403) do
+ActiveRecord::Schema.define(version: 20160307025422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "access_tokens", force: :cascade do |t|
-    t.integer  "account_id"
-    t.integer  "client_id"
+    t.integer  "account_id", null: false
+    t.integer  "client_id",  null: false
     t.string   "token",      null: false
     t.datetime "expires_at", null: false
     t.datetime "created_at", null: false
@@ -36,9 +36,28 @@ ActiveRecord::Schema.define(version: 20160305110403) do
   create_table "accounts", force: :cascade do |t|
   end
 
+  create_table "authorizations", force: :cascade do |t|
+    t.integer  "account_id",   null: false
+    t.integer  "client_id",    null: false
+    t.string   "code",         null: false
+    t.string   "nonce",        null: false
+    t.string   "redirect_uri", null: false
+    t.datetime "expires_at",   null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.index ["account_id"], name: "index_authorizations_on_account_id", using: :btree
+    t.index ["client_id"], name: "index_authorizations_on_client_id", using: :btree
+    t.index ["code"], name: "index_authorizations_on_code", unique: true, using: :btree
+  end
+
+  create_table "authorizations_scopes", id: false, force: :cascade do |t|
+    t.integer "authorization_id", null: false
+    t.integer "scope_id",         null: false
+  end
+
   create_table "clients", force: :cascade do |t|
-    t.integer "account_id"
-    t.string  "redirect_uris"
+    t.integer "account_id",    null: false
+    t.string  "redirect_uris", null: false
     t.string  "identifier",    null: false
     t.string  "secret",        null: false
     t.string  "name",          null: false
@@ -47,15 +66,15 @@ ActiveRecord::Schema.define(version: 20160305110403) do
   end
 
   create_table "connect_internals", force: :cascade do |t|
-    t.integer "account_id"
+    t.integer "account_id", null: false
     t.string  "name",       null: false
     t.index ["account_id"], name: "index_connect_internals_on_account_id", using: :btree
     t.index ["name"], name: "index_connect_internals_on_name", unique: true, using: :btree
   end
 
   create_table "connect_parti", force: :cascade do |t|
-    t.integer "account_id"
-    t.integer "user_id"
+    t.integer "account_id", null: false
+    t.integer "user_id",    null: false
     t.index ["account_id"], name: "index_connect_parti_on_account_id", using: :btree
     t.index ["user_id"], name: "index_connect_parti_on_user_id", using: :btree
   end

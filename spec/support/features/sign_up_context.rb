@@ -3,8 +3,11 @@ shared_context 'sign_up' do
     attrs = FactoryGirl.attributes_for(:user)
     sign_up_params = attrs.merge(password_confirmation: attrs[:password]).merge(params)
     request_sign_up sign_up_params
-    last_email = Devise.mailer.deliveries.last
+    email_confirmation_link
+  end
 
+  def email_confirmation_link
+    last_email = Devise.mailer.deliveries.last
     uris = URI.extract(last_email.body.to_s)
     uris.select { |u| URI(u).path =~ %r|/auth/confirmation| }.first
   end
