@@ -8,9 +8,11 @@ shared_context 'auth' do
   end
 
   def request_authorization_code(params)
-    header 'uid', params[:user_auth_token][:uid]
-    header 'access-token', params[:user_auth_token][:access_token]
-    header 'client', params[:user_auth_token][:client]
+    if params[:user_auth_token]
+      header 'uid', params[:user_auth_token][:uid]
+      header 'access-token', params[:user_auth_token][:access_token]
+      header 'client', params[:user_auth_token][:client]
+    end
 
     post '/v1/authorizations',
       client_id: params[:client_id],
@@ -34,6 +36,10 @@ shared_context 'auth' do
     authorization = Authorization.valid.find_by_code params[:code]
     expect(authorization).not_to be_nil
     expect(authorization.nonce).to eq(params[:nonce])
+  end
+
+  def authorization_code_should_not_be_granted
+    expect(Authorization.last_created).to be_nil
   end
 
   def extract_authorization_params(url)

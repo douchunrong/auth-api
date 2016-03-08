@@ -1,5 +1,5 @@
 class V1::AuthorizationsController < ApplicationController
-  before_action :set_user_by_token, only: [:create]
+  before_action :authenticate_v1_user!, only: [:create]
 
   def create
     current_account = find_or_create_parti_account @resource
