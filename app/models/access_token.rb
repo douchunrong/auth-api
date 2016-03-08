@@ -20,6 +20,12 @@ class AccessToken < ApplicationRecord
     )
   end
 
+  def accessible?(targets = nil)
+    Array(targets).all? do |target|
+      scopes.include? target
+    end
+  end
+
   private
 
   def setup

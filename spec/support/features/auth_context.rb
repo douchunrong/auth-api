@@ -7,6 +7,22 @@ shared_context 'auth' do
     access_token.token
   end
 
+  def authorization_code_is_granted(params)
+    account = params[:account]
+    auth_params = params.slice :client, :nonce, :redirect_uri
+    unless auth_params[:redirect_uri]
+      auth_params[:redirect_uri] = auth_params[:client].redirect_uris.first
+    end
+    authorization = account.authorizations.create! auth_params
+    if params[:scope]
+      scopes = params[:scope].split.map do |name|
+        Scope.find_by_name!(name)
+      end
+      authorization.scopes << scopes
+    end
+    authorization
+  end
+
   def request_authorization_code(params)
     if params[:user_auth_token]
       header 'uid', params[:user_auth_token][:uid]
@@ -20,6 +36,31 @@ shared_context 'auth' do
       nonce: params[:nonce],
       response_type: 'code',
       state: params[:state]
+  end
+
+  def basic_auth_credential(id, secret)
+    ["#{id}:#{secret}"].pack('m').tr("\n", '')
+  end
+
+  def exchange_tokens(params)
+    cred = basic_auth_credential params[:client_id], params[:client_secret]
+    header 'Authorization', "Basic #{cred}"
+    post '/v1/tokens',
+      code: params[:code],
+      grant_type: 'authorization_code',
+      redirect_uri: params[:redirect_uri]
+  end
+
+  def response_should_render_tokens
+    expect(last_response.status).to eq(200)
+    token_response = JSON.parse(last_response.body).transform_keys do |key|
+      key.parameterize.underscore.to_sym
+    end
+    expect(token_response[:access_token]).to be_present
+    expect(token_response[:token_type]).to be_present
+    expect(token_response[:expires_in]).to be_present
+    expect(token_response[:id_token]).to be_present
+    token_response
   end
 
   def authorization_code_should_be_granted(params)
@@ -47,5 +88,20 @@ shared_context 'auth' do
     Hash[URI::decode_www_form(uri.query)]
       .transform_keys { |key| key.parameterize.underscore.to_sym }
       .slice(:code, :state)
+  end
+
+  def tokens_should_be_granted(params)
+    access_token = AccessToken.valid.find_by! token: params[:access_token]
+    expect(access_token).to be_present
+    expect(access_token.scopes.pluck(:name)).to include(*params[:scope].split)
+    expect(access_token.client).to eq(params[:client])
+    expect(access_token.account).to eq(params[:account])
+
+    id_token = IdToken.decode params[:id_token]
+    expect(id_token.aud).to eq(params[:client].identifier)
+    expect(id_token.exp.to_i).to be > Time.now.to_i
+    expect(id_token.iss).to eq(IdToken.config[:issuer])
+    expect(id_token.nonce).to eq(params[:nonce])
+    expect(id_token.sub).to eq(params[:account].identifier)
   end
 end

@@ -4,14 +4,20 @@ class TokenEndpoint
 
   def initialize
     @app = Rack::OAuth2::Server::Token.new do |req, res|
-      client = Client.find_by(
-        identifier: req.client_id,
-        secret: req.client_secret
-      ) || req.invalid_client!
+      client = Client.find_by_identifier(req.client_id) || req.invalid_client!
+      client.secret == req.client_secret || req.invalid_client!
       case req.grant_type
-      when :password
-        # account = find_account req.username, req.password || req.invalid_grant!
-        # account.access_token.create(client: client).to_bearer_token(:with_refresh_token)
+      when :authorization_code
+        authorization = client.authorizations.valid.find_by_code(req.code)
+        req.invalid_grant! if authorization.blank? || !authorization.valid_redirect_uri?(req.redirect_uri)
+        access_token = authorization.access_token
+        res.access_token = access_token.to_bearer_token
+        if access_token.accessible?(Scope.find_by_name(Scope::OPENID))
+          res.id_token = access_token.account.id_tokens.create!(
+            client: access_token.client,
+            nonce: authorization.nonce
+          ).to_jwt
+        end
       else
         req.unsupported_grant_type!
       end

@@ -13,6 +13,8 @@ tags
 
 /.env
 /config/projections.json
+/config/oidc/id_token/private.key
+/config/oidc/id_token/cert.pem
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
