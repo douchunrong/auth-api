@@ -9,11 +9,11 @@ shared_context 'sign_up' do
   def email_confirmation_link
     last_email = Devise.mailer.deliveries.last
     uris = URI.extract(last_email.body.to_s)
-    uris.select { |u| URI(u).path =~ %r|/auth/confirmation| }.first
+    uris.select { |u| URI(u).path =~ %r|#{v1_user_confirmation_path}| }.first
   end
 
   def request_sign_up(params)
-    post '/v1/auth', params
+    post '/v1/users', params
   end
 
   def response_should_render_created_user

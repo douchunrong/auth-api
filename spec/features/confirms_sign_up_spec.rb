@@ -1,7 +1,7 @@
 require 'rails_helper.rb'
 require 'uri'
 
-describe 'User confirms sign-up' do
+describe 'Confirms sign-up' do
   include_context 'feature'
 
   it 'succeeds to confirm sign-up' do

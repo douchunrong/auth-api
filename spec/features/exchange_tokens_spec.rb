@@ -1,6 +1,6 @@
 require 'rails_helper.rb'
 
-describe 'Client exchanges tokens' do
+describe 'Exchanges tokens' do
   include_context 'feature'
 
   before :each do

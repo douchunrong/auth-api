@@ -1,6 +1,6 @@
 require 'rails_helper.rb'
 
-describe 'User signs up' do
+describe 'Sign up' do
   include_context 'feature'
 
   before(:all) do

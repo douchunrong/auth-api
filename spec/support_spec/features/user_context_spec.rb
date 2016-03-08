@@ -30,6 +30,11 @@ describe 'user_exists' do
     user_exists()
     user_exists()
   end
+
+  it 'creates with email' do
+    user = user_exists email: 'any@email.com'
+    expect(user.email).to eq('any@email.com')
+  end
 end
 
 describe 'user_auth_token_exists' do

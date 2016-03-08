@@ -23,7 +23,7 @@ shared_examples 'grant authorization code' do |email|
   end
 end
 
-describe 'Client requests authorization code' do
+describe 'Request authorization code' do
   include_context 'feature'
 
   before :each do
