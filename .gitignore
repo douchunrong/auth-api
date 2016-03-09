@@ -12,6 +12,7 @@ tags
 /.bundle
 
 /.env
+/.powenv
 /config/projections.json
 /config/oidc/id_token/private.key
 /config/oidc/id_token/cert.pem
