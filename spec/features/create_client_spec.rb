@@ -20,7 +20,7 @@ describe 'Create client' do
 
     response_should_render_created_client
     client_should_be_created(
-      account: account,
+      user_account: account,
       name: 'client_name',
       redirect_uris: ['http://redirect.uri']
     )

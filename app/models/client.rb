@@ -2,6 +2,7 @@ class Client < ApplicationRecord
   PARTI_AUTH_API_TEST_CLIENT_NAME = 'Parti Auth API Test'
 
   belongs_to :user_account
+  has_many :test_accounts, inverse_of: :client
   has_many :access_tokens
   has_many :authorizations
   serialize :redirect_uris, JSON

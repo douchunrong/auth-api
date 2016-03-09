@@ -10,6 +10,8 @@ gem 'database_cleaner'
 gem 'devise', '4.0.0.rc1'
 gem 'devise_token_auth', git: 'https://github.com/lynndylanhurley/devise_token_auth.git'
 
+gem 'faker'
+
 gem 'health_check'
 
 gem 'omniauth', '>= 1.0.0'

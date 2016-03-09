@@ -7,6 +7,18 @@ shared_context 'auth' do
     access_token.token
   end
 
+  def token_is_granted_by_client_credentials(client:)
+    exchange_client_credentials_for_token(
+      client_id: client.identifier,
+      client_secret: client.secret
+    )
+    expect(last_response.status).to eq(200)
+    token_response = JSON.parse(last_response.body).transform_keys do |key|
+      key.parameterize.underscore.to_sym
+    end
+    token_response[:access_token]
+  end
+
   def authorization_code_is_granted(params)
     account = params[:account]
     auth_params = params.slice :client, :nonce, :redirect_uri

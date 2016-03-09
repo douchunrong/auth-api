@@ -1,5 +1,5 @@
 module ApplicationRecordTest
-  Models = [Authorization, Client, User]
+  Models = [Account, Authorization, Client, User]
 
   def self.setup_last_created
     Models.each do |klass|

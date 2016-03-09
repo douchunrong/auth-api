@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160309052339) do
+ActiveRecord::Schema.define(version: 20160310023637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,8 +34,10 @@ ActiveRecord::Schema.define(version: 20160309052339) do
   end
 
   create_table "accounts", force: :cascade do |t|
-    t.string "identifier", null: false
-    t.string "type",       null: false
+    t.string  "identifier", null: false
+    t.string  "type",       null: false
+    t.integer "client_id"
+    t.index ["client_id"], name: "index_accounts_on_client_id", using: :btree
   end
 
   create_table "authorizations", force: :cascade do |t|
@@ -58,13 +60,13 @@ ActiveRecord::Schema.define(version: 20160309052339) do
   end
 
   create_table "clients", force: :cascade do |t|
-    t.integer "account_id",    null: false
-    t.string  "redirect_uris", null: false
-    t.string  "identifier",    null: false
-    t.string  "secret",        null: false
-    t.string  "name",          null: false
-    t.index ["account_id"], name: "index_clients_on_account_id", using: :btree
+    t.integer "user_account_id", null: false
+    t.string  "redirect_uris",   null: false
+    t.string  "identifier",      null: false
+    t.string  "secret",          null: false
+    t.string  "name",            null: false
     t.index ["identifier"], name: "index_clients_on_identifier", unique: true, using: :btree
+    t.index ["user_account_id"], name: "index_clients_on_user_account_id", using: :btree
   end
 
   create_table "connect_internals", force: :cascade do |t|

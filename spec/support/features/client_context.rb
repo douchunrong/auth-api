@@ -21,7 +21,7 @@ shared_context 'client' do
   def client_should_be_created(params)
     last_client = Client.last_created
     expect(last_client).not_to be_nil
-    expect(last_client.user_account).to eql(params[:account])
+    expect(last_client.user_account).to eql(params[:user_account])
     expect(params[:redirect_uris]).to match_array(last_client.redirect_uris)
   end
 
