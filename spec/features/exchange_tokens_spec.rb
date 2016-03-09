@@ -4,7 +4,7 @@ describe 'Exchanges tokens' do
   include_context 'feature'
 
   before :each do
-    @account = account_exists
+    @account = user_account_exists
     @client = client_exists
     @authorization = authorization_code_is_granted(
       account: @account,

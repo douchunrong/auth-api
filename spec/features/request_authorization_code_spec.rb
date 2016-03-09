@@ -30,9 +30,9 @@ describe 'Request authorization code' do
     @client = client_exists
   end
 
-  context 'account does not exist' do
+  context 'user account does not exist' do
     before :each do
-      accounts_not_exist(
+      user_accounts_not_exist(
         parti: { email: 'user@email.com' }
       )
     end
@@ -40,9 +40,9 @@ describe 'Request authorization code' do
     include_examples 'grant authorization code', 'user@email.com'
   end
 
-  context 'account exists' do
+  context 'user account exists' do
     before :each do
-      account_exists(
+      user_account_exists(
         parti: { email: 'user@email.com' }
       )
     end

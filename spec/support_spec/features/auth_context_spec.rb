@@ -4,7 +4,7 @@ describe 'token_is_granted' do
   include_context 'feature'
 
   it 'creates access_token' do
-    account = account_exists
+    account = user_account_exists
     client = auth_api_test_client
     token = token_is_granted(
       account: account,

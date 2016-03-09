@@ -8,7 +8,7 @@ class V1::ClientsController < ApplicationController
 
     current_token.account
     client = Client.new(client_params)
-    client.account = current_token.account
+    client.user_account = current_token.account
     client.save!
     render status: 201, json: client
   end

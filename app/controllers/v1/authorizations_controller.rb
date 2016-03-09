@@ -11,7 +11,7 @@ class V1::AuthorizationsController < ApplicationController
   def find_or_create_parti_account(user)
     account = Account.joins(:parti).find_by connect_parti: { user_id: user.id }
     unless account
-      account = Account.new
+      account = UserAccount.new
       account.build_parti(user: user)
       account.save!
     end

@@ -1,7 +1,7 @@
 FactoryGirl.define do
   sequence(:seq) { |n| n }
 
-  factory :account do
+  factory :user_account do
     after(:build) do |account|
       unless account.parti || account.internal
         user = FactoryGirl.build :user
@@ -21,7 +21,7 @@ FactoryGirl.define do
     transient do
       seq { generate :seq }
     end
-    account
+    user_account
     name { "client-#{seq}" }
     redirect_uris { ["http://redirect-#{seq}.uri"] }
   end
