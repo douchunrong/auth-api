@@ -1,6 +1,6 @@
 require 'rails_helper.rb'
 
-describe 'Exchanges tokens' do
+describe 'Exchanges authorization code for tokens' do
   include_context 'feature'
 
   before :each do

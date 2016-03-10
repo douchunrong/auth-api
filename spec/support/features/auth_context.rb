@@ -51,6 +51,16 @@ shared_context 'auth' do
       redirect_uri: params[:redirect_uri]
   end
 
+  def exchange_client_credentials_for_token(client_id:, client_secret:)
+    cred = basic_auth_credential client_id, client_secret
+    header 'Authorization', "Basic #{cred}"
+    post '/v1/tokens', grant_type: 'client_credentials'
+  end
+
+  def exchange_client_credentials_for_token_without_credential
+    post '/v1/tokens', grant_type: 'client_credentials'
+  end
+
   def response_should_render_tokens
     expect(last_response.status).to eq(200)
     token_response = JSON.parse(last_response.body).transform_keys do |key|
@@ -60,6 +70,17 @@ shared_context 'auth' do
     expect(token_response[:token_type]).to be_present
     expect(token_response[:expires_in]).to be_present
     expect(token_response[:id_token]).to be_present
+    token_response
+  end
+
+  def response_should_render_access_token
+    expect(last_response.status).to eq(200)
+    token_response = JSON.parse(last_response.body).transform_keys do |key|
+      key.parameterize.underscore.to_sym
+    end
+    expect(token_response[:access_token]).to be_present
+    expect(token_response[:token_type]).to be_present
+    expect(token_response[:expires_in]).to be_present
     token_response
   end
 
@@ -103,5 +124,12 @@ shared_context 'auth' do
     expect(id_token.iss).to eq(IdToken.config[:issuer])
     expect(id_token.nonce).to eq(params[:nonce])
     expect(id_token.sub).to eq(params[:account].identifier)
+  end
+
+  def access_tokens_should_be_granted(access_token:, client:)
+    access_token = AccessToken.valid.find_by! token: access_token
+    expect(access_token.client).to eq(client)
+    expect(access_token.account).to eq(NullAccount.take)
+    expect(access_token.expires_at).to be > Time.now
   end
 end

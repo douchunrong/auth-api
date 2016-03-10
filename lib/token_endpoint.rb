@@ -18,6 +18,8 @@ class TokenEndpoint
             nonce: authorization.nonce
           ).to_jwt
         end
+      when :client_credentials
+        res.access_token = client.access_tokens.create(account: NullAccount.take).to_bearer_token
       else
         req.unsupported_grant_type!
       end
