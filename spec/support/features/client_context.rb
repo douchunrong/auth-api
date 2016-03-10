@@ -1,4 +1,13 @@
 shared_context 'client' do
+  def clients_exist(attrs_set = [{}], **options)
+    if options[:count]
+      attrs_set = attrs_set.cycle.take(options[:count])
+    end
+    attrs_set.map do |attrs|
+      client_exists attrs
+    end
+  end
+
   def client_exists(attrs = {})
     FactoryGirl.create(:client, attrs)
   end
