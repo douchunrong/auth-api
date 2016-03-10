@@ -17,6 +17,23 @@ FactoryGirl.define do
     end
   end
 
+  factory :test_account do
+    client
+    after(:build) do |account|
+      unless account.parti || account.internal
+        user = FactoryGirl.build :user
+        account.build_parti(user: user)
+      end
+    end
+
+    after(:create) do |account|
+      unless account.parti || account.internal
+        user = FactoryGirl.create :user
+        account.create_parti(user: user)
+      end
+    end
+  end
+
   factory :client do
     transient do
       seq { generate :seq }
