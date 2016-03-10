@@ -18,7 +18,7 @@ shared_context 'client' do
 
   def auth_api_test_client()
     account = Account.joins(:internal).find_by!(
-      connect_internals: { name: ConnectInternal::PARTI_AUTH_INTERNAL_NAME }
+      connect_internals: { name: ConnectInternal::INTERNAL_NAME }
     )
     account.clients.find_by! name: Client::PARTI_AUTH_API_TEST_CLIENT_NAME
   end

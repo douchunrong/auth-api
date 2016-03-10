@@ -1,5 +1,6 @@
 class ConnectInternal < ApplicationRecord
-  PARTI_AUTH_INTERNAL_NAME = 'Parti Auth Internal'
+  INTERNAL_NAME = 'Internal'
+  NULL_NAME = 'Null'
 
   belongs_to :account, inverse_of: :internal
 end

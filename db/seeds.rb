@@ -5,11 +5,19 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+#
 
-internal_account = UserAccount.joins(:internal).find_by connect_internals: { name: ConnectInternal::PARTI_AUTH_INTERNAL_NAME }
+null_account = NullAccount.take
+unless null_account
+  null_account = NullAccount.new
+  null_account.build_internal name: ConnectInternal::NULL_NAME
+  null_account.save!
+end
+
+internal_account = UserAccount.joins(:internal).find_by connect_internals: { name: ConnectInternal::INTERNAL_NAME }
 unless internal_account
   internal_account = UserAccount.new
-  internal_account.build_internal name: ConnectInternal::PARTI_AUTH_INTERNAL_NAME
+  internal_account.build_internal name: ConnectInternal::INTERNAL_NAME
   internal_account.save!
 end
 

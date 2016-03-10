@@ -6,7 +6,7 @@ class Account < ApplicationRecord
   has_many :id_tokens
 
   before_validation :setup, on: :create
-  validates :identifier, presence: true, uniqueness: true
+  validates :identifier, length: { minimum: 0, allow_nil: false }, uniqueness: true
   validates :type, presence: true
 
   def initialize(*args)
