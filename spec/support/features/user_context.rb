@@ -31,9 +31,22 @@ shared_context 'user' do
       .transform_keys { |key| key.parameterize.underscore.to_sym }
   end
 
+  def list_users(token: nil, **attrs)
+    if token
+      header 'Authorization', "Bearer #{token}"
+    end
+    get '/v1/users', attrs
+  end
+
   def user_should_be_created(params)
     last_user = User.last_created
     expect(last_user.email).to eq(params[:email])
     expect(last_user.valid_password? params[:password]).to be true
+  end
+
+  def response_should_render_users(users)
+    expect(last_response.status).to eq(200)
+    users_json = ActiveModel::SerializableResource.new(users).to_json
+    expect(last_response.body).to be_json_eql(users_json)
   end
 end

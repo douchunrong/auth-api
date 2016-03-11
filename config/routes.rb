@@ -10,5 +10,9 @@ Rails.application.routes.draw do
     end
     resources :authorizations, only: :create
     post 'tokens', to: proc { |env| TokenEndpoint.new.call(env) }
+
+    if Rails.env.test?
+      get '/users', to: 'users#index'
+    end
   end
 end
