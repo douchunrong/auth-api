@@ -29,6 +29,14 @@ unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_A
   )
 end
 
+unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_UI_TEST_CLIENT_NAME
+  Client.create!(
+    user_account: internal_account,
+    name: Client::PARTI_AUTH_UI_TEST_CLIENT_NAME,
+    redirect_uris: ''
+  )
+end
+
 ['openid', 'profile', 'email', 'create_client'].each do |name|
   unless Scope.find_by name: name
     Scope.create! name: name

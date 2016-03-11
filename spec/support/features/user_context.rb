@@ -31,6 +31,13 @@ shared_context 'user' do
       .transform_keys { |key| key.parameterize.underscore.to_sym }
   end
 
+  def delete_user(token: nil, user_id:)
+    if token
+      header 'Authorization', "Bearer #{token}"
+    end
+    delete "/v1/users/#{user_id}"
+  end
+
   def list_users(token: nil, **attrs)
     if token
       header 'Authorization', "Bearer #{token}"
@@ -42,6 +49,11 @@ shared_context 'user' do
     last_user = User.last_created
     expect(last_user.email).to eq(params[:email])
     expect(last_user.valid_password? params[:password]).to be true
+  end
+
+  def user_should_be_deleted(params)
+    users = User.where(params)
+    expect(users).to be_empty
   end
 
   def response_should_render_users(users)

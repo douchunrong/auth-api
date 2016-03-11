@@ -10,4 +10,9 @@ class V1::UsersController < ApplicationController
     params.permit :email
   end
 
+  def destroy
+    user = User.find params[:id]
+    user.destroy
+    render :nothing, status: 204
+  end
 end
