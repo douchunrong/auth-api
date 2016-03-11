@@ -22,18 +22,26 @@ unless internal_account
 end
 
 unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_API_TEST_CLIENT_NAME
-  Client.create!(
+  client = Client.create!(
     user_account: internal_account,
     name: Client::PARTI_AUTH_API_TEST_CLIENT_NAME,
     redirect_uris: ''
   )
+  client.update(
+    identifier: '45d3ab6922c7e2a0c8cc2a5b19080658',
+    secret: '58a17ba804daa8011c3c2e4db2df0ea203eb1341fad6bd116d67eceebf580826'
+  )
 end
 
 unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_UI_TEST_CLIENT_NAME
-  Client.create!(
-    user_account: internal_account,
+  client = Client.create!(
     name: Client::PARTI_AUTH_UI_TEST_CLIENT_NAME,
-    redirect_uris: ''
+    redirect_uris: '',
+    user_account: internal_account,
+  )
+  client.update(
+    identifier: '64b14471f5a3aaacce1f13a801367d6d',
+    secret: '2556d3de7c2fc40a1b6bd0b2e8e6261c80f00f6a62426fc0de7d6a6a6551159c'
   )
 end
 
