@@ -31,18 +31,18 @@ shared_context 'user' do
       .transform_keys { |key| key.parameterize.underscore.to_sym }
   end
 
-  def delete_user(token: nil, user_id:)
+  def delete_user_for_test(token: nil, user_id:)
     if token
       header 'Authorization', "Bearer #{token}"
     end
-    delete "/v1/users/#{user_id}"
+    delete "/v1/test/users/#{user_id}"
   end
 
-  def list_users(token: nil, **attrs)
+  def list_users_for_test(token: nil, **attrs)
     if token
       header 'Authorization', "Bearer #{token}"
     end
-    get '/v1/users', attrs
+    get '/v1/test/users', attrs
   end
 
   def user_should_be_created(params)

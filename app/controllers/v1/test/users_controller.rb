@@ -1,4 +1,4 @@
-class V1::UsersController < ApplicationController
+class V1::Test::UsersController < ApplicationController
   before_action :require_access_token
 
   def index

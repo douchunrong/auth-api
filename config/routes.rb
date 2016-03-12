@@ -12,7 +12,9 @@ Rails.application.routes.draw do
     post 'tokens', to: proc { |env| TokenEndpoint.new.call(env) }
 
     if Rails.env.test?
-      resources :users, only: [:index, :destroy]
+      namespace :test do
+        resources :users, only: [:index, :destroy]
+      end
     end
   end
 end
