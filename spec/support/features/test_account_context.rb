@@ -35,7 +35,7 @@ shared_context 'test_account' do
   end
 
   def response_should_render_test_account
-    last_account = Account.last_created
+    last_account = Account.createds.last
     expect(last_response.body).to be_json_eql(<<-JSON)
     {
       "id": "#{last_account.identifier}",
@@ -50,7 +50,7 @@ shared_context 'test_account' do
   end
 
   def test_account_should_be_created(client:)
-    last_account = Account.last_created
+    last_account = Account.createds.last
     expect(last_account).to be_instance_of(TestAccount)
     expect(last_account.client).to eq(client)
   end

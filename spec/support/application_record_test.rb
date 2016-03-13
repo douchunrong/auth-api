@@ -1,22 +1,23 @@
 module ApplicationRecordTest
   Models = [Account, Authorization, Client, User]
 
-  def self.setup_last_created
+  def self.setup_createds
     Models.each do |klass|
       klass.class_eval do
-        cattr_accessor :last_created
+        cattr_accessor :createds
+        klass.createds = []
         after_create do
-          self.class.last_created = self
+          self.class.createds << self
         end
       end
     end
   end
 
-  def self.clear_last_created
+  def self.clear_createds
     Models.each do |klass|
-      klass.last_created = nil
+      klass.createds = []
     end
   end
 
-  setup_last_created
+  setup_createds
 end

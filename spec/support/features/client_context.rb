@@ -19,7 +19,7 @@ shared_context 'client' do
   end
 
   def client_should_be_created(params)
-    last_client = Client.last_created
+    last_client = Client.createds.last
     expect(last_client).not_to be_nil
     expect(last_client.user_account).to eql(params[:user_account])
     expect(params[:redirect_uris]).to match_array(last_client.redirect_uris)
@@ -33,7 +33,7 @@ shared_context 'client' do
   end
 
   def response_should_render_created_client
-    last_client = Client.last_created
+    last_client = Client.createds.last
     expect(last_response.status).to eq(201)
     expect(last_response.body).to be_json_eql(<<-JSON)
     {

@@ -17,7 +17,7 @@ shared_context 'sign_up' do
   end
 
   def response_should_render_created_user
-    last_user = User.last_created
+    last_user = User.createds.last
     expect(last_response.status).to eq(200)
     expect(last_response.body).to be_json_eql(<<-JSON)
     {
@@ -38,7 +38,7 @@ shared_context 'sign_up' do
   def confirmation_email_should_be_sent(params)
     last_email = Devise.mailer.deliveries.last
     expect(last_email).to deliver_to(params[:email])
-    confirmation_token = User.last_created.confirmation_token
+    confirmation_token = User.createds.last.confirmation_token
     expect(last_email).to have_body_text("confirmation_token=#{confirmation_token}")
   end
 

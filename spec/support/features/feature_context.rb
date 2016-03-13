@@ -11,6 +11,6 @@ shared_context 'feature' do
   include_context 'user_auth'
 
   before :each do
-    ApplicationRecordTest.clear_last_created
+    ApplicationRecordTest.clear_createds
   end
 end

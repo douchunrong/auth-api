@@ -46,7 +46,7 @@ shared_context 'user' do
   end
 
   def user_should_be_created(params)
-    last_user = User.last_created
+    last_user = User.createds.last
     expect(last_user.email).to eq(params[:email])
     expect(last_user.valid_password? params[:password]).to be true
   end

@@ -113,7 +113,7 @@ shared_context 'auth' do
   end
 
   def authorization_code_should_not_be_granted
-    expect(Authorization.last_created).to be_nil
+    expect(Authorization.createds).to be_empty
   end
 
   def extract_authorization_params(url)
