@@ -13,13 +13,13 @@ class V1::Test::UsersController < ApplicationController
   end
 
   def create
-    attrs_set = params[:attrs_set] || [{}]
+    attrs_set = create_params.to_h[:attrs_set] || [{}]
     users = users_exist attrs_set
     render status: 200, json: users
   end
 
   def create_params
-    params.permit attrs_set: []
+    params.permit attrs_set: [:email, :password]
   end
 
   def destroy
