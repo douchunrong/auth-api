@@ -13,6 +13,7 @@ describe 'list users for test' do
       token: token
     )
 
+    wally.password = nil
     response_should_render_users [ wally ]
   end
 

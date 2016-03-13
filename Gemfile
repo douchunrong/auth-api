@@ -10,6 +10,7 @@ gem 'database_cleaner'
 gem 'devise', '4.0.0.rc1'
 gem 'devise_token_auth', git: 'https://github.com/lynndylanhurley/devise_token_auth.git'
 
+gem 'factory_girl_rails'
 gem 'faker'
 
 gem 'health_check'
@@ -39,7 +40,6 @@ gem 'redis', '~> 3.0'
 
 group :development, :test do
   gem 'byebug'
-  gem 'factory_girl_rails'
   gem 'faraday'
   gem 'json_spec'
   gem 'pry'

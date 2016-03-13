@@ -1,20 +1,6 @@
 shared_context 'user' do
+  include Test::Factories::Users
   include_context 'sign_up'
-
-  def user_exists(attrs = {})
-    attrs = { confirm: true }.merge attrs
-    user_attrs = attrs.except(:confirm)
-    post v1_user_registration_path, FactoryGirl.attributes_for(:user, user_attrs)
-    expect(last_response.status).to eq(200)
-    json = JSON.parse(last_response.body)
-    expect(json['status']).to eq('success')
-    if (attrs[:confirm])
-      uri = URI email_confirmation_link
-      get uri.path + '?' + uri.query
-      expect(last_response.status).to eq(302)
-    end
-    User.find json['data']['id']
-  end
 
   def user_not_exist(attrs)
     User.where(attrs).destroy_all
