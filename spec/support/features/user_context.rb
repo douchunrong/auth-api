@@ -17,6 +17,13 @@ shared_context 'user' do
       .transform_keys { |key| key.parameterize.underscore.to_sym }
   end
 
+  def create_users_for_for_test(token: nil, attrs_set: [{}])
+    if token
+      header 'Authorization', "Bearer #{token}"
+    end
+    post "/v1/test/users", { attrs_set: attrs_set }, { 'Content-Type' => 'application/json' }
+  end
+
   def delete_user_for_test(token: nil, user_id:)
     if token
       header 'Authorization', "Bearer #{token}"
@@ -42,9 +49,26 @@ shared_context 'user' do
     expect(users).to be_empty
   end
 
+  def users_should_be_created(params)
+    if params[:count]
+      expect(User.createds.size).to eq(params[:count])
+    end
+    if params[:attrs_set]
+      User.createds.zip(params[:attrs_set]).each do |user, attrs|
+        expect(user.attributes.symbolize_keys.slice(*attrs.keys)).to eq(attrs)
+      end
+    end
+  end
+
   def response_should_render_users(users)
     expect(last_response.status).to eq(200)
     users_json = ActiveModel::SerializableResource.new(users).to_json
+    expect(last_response.body).to be_json_eql(users_json)
+  end
+
+  def response_should_be_render_created_users
+    expect(last_response.status).to eq(200)
+    users_json = ActiveModel::SerializableResource.new(User.createds).to_json
     expect(last_response.body).to be_json_eql(users_json)
   end
 end

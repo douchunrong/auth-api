@@ -1,4 +1,6 @@
 class V1::Test::UsersController < ApplicationController
+  include ::Test::Factories::Users
+
   before_action :require_access_token
 
   def index
@@ -8,6 +10,16 @@ class V1::Test::UsersController < ApplicationController
 
   def index_params
     params.permit :email
+  end
+
+  def create
+    attrs_set = params[:attrs_set] || [{}]
+    users = users_exist attrs_set
+    render status: 200, json: users
+  end
+
+  def create_params
+    params.permit attrs_set: []
   end
 
   def destroy
