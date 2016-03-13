@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     if Rails.env.test?
       namespace :test do
         resources :users, only: [:index, :destroy]
+        post 'database/clean', to: 'database#clean'
       end
     end
   end
