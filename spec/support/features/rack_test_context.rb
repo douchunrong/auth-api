@@ -14,4 +14,8 @@ shared_context 'rack_test' do
   def response_should_be_404_not_found
     expect(last_response.status).to eq(404)
   end
+
+  def response_should_be_422_unprocessable_entity
+    expect(last_response.status).to eq(422)
+  end
 end
