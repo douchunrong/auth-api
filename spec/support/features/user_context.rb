@@ -1,5 +1,5 @@
 shared_context 'user' do
-  include Test::Factories::Users
+  include Test::Factories::User
   include_context 'sign_up'
 
   def user_not_exist(attrs)

@@ -14,13 +14,6 @@ FactoryGirl.define do
 
   factory :test_account do
     client
-    after(:build) do |account|
-      unless account.parti || account.internal
-        user = FactoryGirl.build :user
-        account.build_parti(user: user)
-      end
-    end
-
     after(:create) do |account|
       unless account.parti || account.internal
         user = FactoryGirl.create :user
@@ -32,19 +25,18 @@ FactoryGirl.define do
   factory :user do
     transient do
       seq { generate :seq }
+      confirmed true
     end
     email { "user-#{seq}@email.com" }
     password 'Passw0rd1!'
+    after(:create) do |user, evaluator|
+      if evaluator.confirmed
+        user.confirm
+      end
+    end
   end
 
   factory :user_account do
-    after(:build) do |account|
-      unless account.parti || account.internal
-        user = FactoryGirl.build :user
-        account.build_parti(user: user)
-      end
-    end
-
     after(:create) do |account|
       unless account.parti || account.internal
         user = FactoryGirl.create :user

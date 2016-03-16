@@ -1,5 +1,5 @@
 class V1::Test::UsersController < ApplicationController
-  include ::Test::Factories::Users
+  include ::Test::Factories::User
 
   before_action :require_access_token
 

@@ -1,6 +1,6 @@
 require 'test/factories/factory_girl'
 
-module Test::Factories::Users
+module Test::Factories::User
   def users_exist(attrs_set = [{}], **options)
     if options[:count]
       attrs_set = attrs_set.cycle.take(options[:count])
@@ -12,10 +12,6 @@ module Test::Factories::Users
   end
 
   def user_exists(attrs = {})
-    user_attrs = attrs.except :unconfirmed
-    FactoryGirl.create :user, user_attrs do |user|
-      user.confirmed_at = Time.now unless attrs[:unconfirmed]
-      user.save!
-    end
+    FactoryGirl.create :user, attrs
   end
 end

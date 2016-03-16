@@ -1,7 +1,7 @@
 require 'rails_helper.rb'
 
-describe Test::Factories::Users do
-  include Test::Factories::Users
+describe Test::Factories::User do
+  include Test::Factories::User
 
   describe 'user_exists' do
     it 'creates user record' do
@@ -21,7 +21,7 @@ describe Test::Factories::Users do
 
     it 'creates unconfirmed' do
       Timecop.freeze do
-        user = user_exists unconfirmed: true
+        user = user_exists confirmed: false
         expect(user.confirmation_token).not_to be_blank
         expect(user.confirmation_sent_at).to eq(Time.now)
         expect(user.confirmed_at).to be_blank
