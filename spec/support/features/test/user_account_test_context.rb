@@ -8,6 +8,13 @@ shared_context 'user_account_test' do
       'CONTENT_TYPE' => 'application/json'
   end
 
+  def list_user_accounts_for_test(token: nil, **attrs)
+    if token
+      header 'Authorization', "Bearer #{token}"
+    end
+    get '/v1/test/user-accounts', attrs
+  end
+
   def response_should_be_render_created_user_accounts
     expect(last_response.status).to eq(200)
     accounts_json = ActiveModel::SerializableResource.new(Account.createds).to_json
