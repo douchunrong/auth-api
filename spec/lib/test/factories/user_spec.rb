@@ -21,7 +21,7 @@ describe Test::Factories::User do
 
     it 'creates unconfirmed' do
       Timecop.freeze do
-        user = user_exists confirmed: false
+        user = user_exists confirm: false
         expect(user.confirmation_token).not_to be_blank
         expect(user.confirmation_sent_at).to eq(Time.now)
         expect(user.confirmed_at).to be_blank

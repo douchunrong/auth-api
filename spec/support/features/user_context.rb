@@ -6,12 +6,10 @@ shared_context 'user' do
     User.where(attrs).destroy_all
   end
 
-  def user_auth_token_exists(attrs = {})
-    attrs = { password: 'Passw0rd!' }.merge(attrs)
-    user = user_exists(attrs)
+  def user_auth_token_exists(email:, password:)
     post v1_user_session_path,
-      email: user.email,
-      password: attrs[:password]
+      email: email,
+      password: password
     expect(last_response.status).to eq(200)
     last_response.headers.slice('access-token', 'client', 'uid')
       .transform_keys { |key| key.parameterize.underscore.to_sym }
@@ -58,6 +56,10 @@ shared_context 'user' do
         expect(user.attributes.symbolize_keys.slice(*attrs.keys)).to eq(attrs)
       end
     end
+  end
+
+  def users_should_not_exist(attrs)
+    expect(User.where attrs).to be_empty
   end
 
   def response_should_render_users(users)

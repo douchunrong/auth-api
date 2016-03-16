@@ -8,3 +8,5 @@ RSpec.configure do |config|
     end
   end
 end
+
+require 'test/factories/factory_girl'

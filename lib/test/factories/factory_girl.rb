@@ -7,14 +7,14 @@ FactoryGirl.define do
     transient do
       seq { generate :seq }
     end
-    user_account
+    association :user_account, factory: :user_account_parti
     name { "client-#{seq}" }
     redirect_uris { ["http://redirect-#{seq}.uri"] }
   end
 
   factory :test_account do
     client
-    after(:create) do |account|
+    after :create  do |account|
       unless account.parti || account.internal
         user = FactoryGirl.create :user
         account.create_parti(user: user)
@@ -25,22 +25,33 @@ FactoryGirl.define do
   factory :user do
     transient do
       seq { generate :seq }
-      confirmed true
+      confirm true
     end
     email { "user-#{seq}@email.com" }
     password 'Passw0rd1!'
-    after(:create) do |user, evaluator|
-      if evaluator.confirmed
+    after :create  do |user, evaluator|
+      if evaluator.confirm
         user.confirm
       end
     end
   end
 
   factory :user_account do
-    after(:create) do |account|
-      unless account.parti || account.internal
-        user = FactoryGirl.create :user
-        account.create_parti(user: user)
+  end
+
+  factory :user_account_parti, parent: :user_account do
+    transient do
+      parti {}
+    end
+
+    after :build do |account, evaluator|
+      user = build :user, evaluator.parti
+      account.build_parti user: user
+    end
+
+    after :create do |account, evaluator|
+      unless evaluator.parti && evaluator.parti[:confirm] === false
+        account.parti.user.confirm
       end
     end
   end

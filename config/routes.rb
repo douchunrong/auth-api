@@ -14,6 +14,9 @@ Rails.application.routes.draw do
     if Rails.env.test?
       namespace :test do
         resources :users, only: [:index, :create, :destroy]
+        resources :user_accounts, path: 'user-accounts' do
+          delete :index, on: :collection, action: :delete_all
+        end
         post 'database/clean', to: 'database#clean'
       end
     end

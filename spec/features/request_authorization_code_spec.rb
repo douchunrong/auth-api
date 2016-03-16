@@ -1,11 +1,12 @@
 require 'rails_helper.rb'
 
-shared_examples 'grant authorization code' do |email|
+shared_examples 'grant authorization code' do |email, password|
   include_context 'feature'
 
   it 'grants authorization code' do
     user_auth_token = user_auth_token_exists(
-      email: email
+      email: email,
+      password: password
     )
 
     request_authorization_code(
@@ -32,22 +33,19 @@ describe 'Request authorization code' do
 
   context 'user account does not exist' do
     before :each do
-      user_accounts_not_exist(
-        parti: { email: 'user@email.com' }
-      )
+      user_accounts_not_exist parti: { email: 'user@email.com' }
+      user_exists email: 'user@email.com', password: 'Passw0rd!'
     end
 
-    include_examples 'grant authorization code', 'user@email.com'
+    include_examples 'grant authorization code', 'user@email.com', 'Passw0rd!'
   end
 
   context 'user account exists' do
     before :each do
-      user_account_exists(
-        parti: { email: 'user@email.com' }
-      )
+      user_account_exists parti: { email: 'user@email.com', password: 'Passw0rd!' }
     end
 
-    include_examples 'grant authorization code', 'user@email.com'
+    include_examples 'grant authorization code', 'user@email.com', 'Passw0rd!'
   end
 
   it 'responds 401 unauthorized without user auth token' do

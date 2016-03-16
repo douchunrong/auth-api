@@ -8,6 +8,7 @@ shared_context 'feature' do
   include_context 'test_account'
   include_context 'user'
   include_context 'user_account'
+  include_context 'user_account_test'
   include_context 'user_auth'
 
   before :each do
