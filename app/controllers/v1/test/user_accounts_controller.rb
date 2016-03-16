@@ -26,4 +26,10 @@ class V1::Test::UserAccountsController < ApplicationController
   def create_params
     params.permit attrs_set: [parti: [:email]]
   end
+
+  def destroy
+    account = UserAccount.find_by_identifier! params[:id]
+    account.destroy
+    render :nothing, status: 204
+  end
 end

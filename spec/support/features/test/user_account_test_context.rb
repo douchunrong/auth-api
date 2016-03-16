@@ -8,6 +8,13 @@ shared_context 'user_account_test' do
       'CONTENT_TYPE' => 'application/json'
   end
 
+  def delete_user_account_for_test(token: nil, id:)
+    if token
+      header 'Authorization', "Bearer #{token}"
+    end
+    delete "/v1/test/user-accounts/#{id}"
+  end
+
   def list_user_accounts_for_test(token: nil, **attrs)
     if token
       header 'Authorization', "Bearer #{token}"
@@ -35,6 +42,16 @@ shared_context 'user_account_test' do
         end
       end
     end
+  end
+
+  def user_account_should_be_deleted(attrs)
+    parti_attrs = attrs[:parti]
+    if parti_attrs
+      accounts = UserAccount.joins(parti: :user).where(users: parti_attrs)
+    else
+      accounts = UserAccount.where(attrs)
+    end
+    expect(accounts).to be_empty
   end
 
   def response_should_render_user_accounts(accounts)
