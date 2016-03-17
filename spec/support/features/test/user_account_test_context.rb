@@ -3,16 +3,16 @@ shared_context 'user_account_test' do
     if token
         header 'Authorization', "Bearer #{token}"
     end
-    post "/v1/test/user-accounts",
+    post '/v1/test/user-accounts',
       { attrs_set: attrs_set }.to_json,
       'CONTENT_TYPE' => 'application/json'
   end
 
-  def delete_user_account_for_test(token: nil, id:)
+  def delete_user_account_for_test(token: nil, identifier:)
     if token
       header 'Authorization', "Bearer #{token}"
     end
-    delete "/v1/test/user-accounts/#{id}"
+    delete "/v1/test/user-accounts/#{identifier}"
   end
 
   def list_user_accounts_for_test(token: nil, **attrs)
@@ -22,10 +22,36 @@ shared_context 'user_account_test' do
     get '/v1/test/user-accounts', attrs
   end
 
+  def grant_access_token_for_user_account(identifier:, token: nil, scope: nil)
+    if token
+        header 'Authorization', "Bearer #{token}"
+    end
+    post "/v1/test/user-accounts/#{identifier}/tokens",
+      { scope: scope }.to_json,
+      'CONTENT_TYPE' => 'application/json'
+  end
+
   def response_should_be_render_created_user_accounts
     expect(last_response.status).to eq(200)
     accounts_json = ActiveModel::SerializableResource.new(Account.createds).to_json
     expect(last_response.body).to be_json_eql(accounts_json)
+  end
+
+  def response_should_render_granted_access_token
+    last_token = AccessToken.createds.last
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to be_json_eql(<<-JSON)
+      {
+        "access_token": "#{last_token.token}",
+        "token_type": "Bearer"
+      }
+    JSON
+    .excluding('expires_in')
+    token_response = JSON.parse(last_response.body).transform_keys do |key|
+      key.parameterize.underscore.to_sym
+    end
+    expect(token_response[:expires_in]).to be >= (last_token.expires_at - Time.now.utc).to_i
+    token_response
   end
 
   def user_accounts_should_be_created(params)

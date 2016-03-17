@@ -14,7 +14,7 @@ describe 'Exchanges client credentials for token' do
     )
 
     response = response_should_render_access_token
-    access_tokens_should_be_granted(
+    access_token_should_be_granted(
       access_token: response[:access_token],
       client: @client
     )

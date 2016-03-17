@@ -28,8 +28,27 @@ class V1::Test::UserAccountsController < ApplicationController
   end
 
   def destroy
-    account = UserAccount.find_by_identifier! params[:id]
+    account = UserAccount.find_by_identifier! destory_params[:identifier]
     account.destroy
     render :nothing, status: 204
+  end
+
+  def destory_params
+    params.permit :identifier
+  end
+
+  def create_token
+    account = UserAccount.find_by_identifier! create_token_params[:identifier]
+    token = account.access_tokens.build client: current_token.client
+    scopes = create_token_params[:scope].split(' ').map do |scope_name|
+      Scope.find_by_name! scope_name
+    end
+    token.scopes << scopes
+    account.save!
+    render status: 200, json: token
+  end
+
+  def create_token_params
+    params.permit :identifier, :scope
   end
 end

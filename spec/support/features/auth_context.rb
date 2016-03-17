@@ -138,10 +138,17 @@ shared_context 'auth' do
     expect(id_token.sub).to eq(params[:account].identifier)
   end
 
-  def access_tokens_should_be_granted(access_token:, client:)
-    access_token = AccessToken.valid.find_by! token: access_token
-    expect(access_token.client).to eq(client)
-    expect(access_token.account).to eq(NullAccount.take)
-    expect(access_token.expires_at).to be > Time.now
+  def access_token_should_be_granted(access_token:, **options)
+    token = AccessToken.valid.find_by! token: access_token
+    expect(token.expires_at).to be > Time.now
+    if options[:account]
+      expect(token.account).to eq(options[:account])
+    end
+    if options[:client]
+      expect(token.client).to eq(options[:client])
+    end
+    if options[:scopes]
+      expect(token.scopes).to eq(options[:scopes].map { |s| Scope.find_by_name! s })
+    end
   end
 end

@@ -9,7 +9,7 @@ describe 'delete user_account for test' do
     account = user_account_exists parti: { email: 'account@email.com' }
 
     delete_user_account_for_test(
-      id: account.identifier,
+      identifier: account.identifier,
       token: token
     )
 
@@ -21,7 +21,7 @@ describe 'delete user_account for test' do
   it 'respond 401 unauthorized without token' do
     account = user_account_exists parti: { email: 'account@email.com' }
 
-    delete_user_account_for_test id: account.identifier
+    delete_user_account_for_test identifier: account.identifier
 
     response_should_be_401_unauthorized
   end
