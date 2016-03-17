@@ -12,7 +12,7 @@ describe 'list user accounts for test' do
     wally_account = user_account_exists parti: { email: 'wally@email.com' }
 
     list_user_accounts_for_test(
-      attrs: {
+      where: {
         identifier: wally_account.identifier
       }.to_json,
       token: @token
@@ -26,7 +26,7 @@ describe 'list user accounts for test' do
     wally_account = user_account_exists parti: { email: 'wally@email.com' }
 
     list_user_accounts_for_test(
-      attrs: {
+      where: {
         parti: { email: 'wally@email.com' }
       }.to_json,
       token: @token
@@ -40,7 +40,7 @@ describe 'list user accounts for test' do
     user_accounts_not_exist parti: { email: 'wally@email.com' }
 
     list_user_accounts_for_test(
-      attrs: {
+      where: {
         parti: { email: 'wally@email.com' }
       }.to_json,
       token: @token
@@ -51,7 +51,7 @@ describe 'list user accounts for test' do
 
   it 'list empty with invalid parti params' do
     list_user_accounts_for_test(
-      attrs: {
+      where: {
         parti: 'invalid-parti-attrs'
       }.to_json,
       token: @token
@@ -61,7 +61,7 @@ describe 'list user accounts for test' do
 
   it 'responds 400 bad request with invalid json' do
     list_user_accounts_for_test(
-      attrs: '[ { invalid-json } ]',
+      where: '[ { invalid-json } ]',
       token: @token
     )
 
@@ -70,7 +70,7 @@ describe 'list user accounts for test' do
 
   it 'responds 401 unauthorized without token' do
     list_user_accounts_for_test(
-      attrs: {
+      where: {
         parti: { email: 'wally@email.com' }
       }.to_json
     )

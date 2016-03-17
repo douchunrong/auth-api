@@ -4,31 +4,31 @@ class V1::Test::UserAccountsController < ApplicationController
   before_action :require_access_token
 
   def index
-    attrs = index_params
-    if attrs.empty?
+    where = index_params
+    if where.empty?
       accounts = []
     else
-      parti_attrs = attrs[:parti]
+      parti_attrs = where[:parti]
       if parti_attrs
         accounts = UserAccount.joins(parti: :user).where(users: parti_attrs)
       else
-        accounts = UserAccount.where attrs
+        accounts = UserAccount.where where
       end
     end
     render status: 200, json: accounts
   end
 
   def index_params
-    attrs = {}
-    if params[:attrs]
+    where = {}
+    if params[:where]
       begin
-        attrs = JSON.parse(params[:attrs])
+        where = JSON.parse(params[:where])
       rescue JSON::ParserError
-        raise ActionController::BadRequest.new 'Invalid json format for attrs parameter'
+        raise ActionController::BadRequest.new 'Invalid json format for where parameter'
       end
     end
-    new_params = ActionController::Parameters.new attrs: attrs
-    new_params.require(:attrs).permit(:id, :identifier, parti: [:email]).to_h.compact
+    new_params = ActionController::Parameters.new where: where
+    new_params.require(:where).permit(:id, :identifier, parti: [:email]).to_h.compact
   end
 
   def create
