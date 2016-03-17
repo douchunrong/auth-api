@@ -15,11 +15,11 @@ shared_context 'user_account_test' do
     delete "/v1/test/user-accounts/#{identifier}"
   end
 
-  def list_user_accounts_for_test(token: nil, **attrs)
+  def list_user_accounts_for_test(token: nil, attrs:)
     if token
       header 'Authorization', "Bearer #{token}"
     end
-    get '/v1/test/user-accounts', attrs
+    get '/v1/test/user-accounts', attrs: attrs
   end
 
   def grant_access_token_for_user_account(identifier:, token: nil, scope: nil)
