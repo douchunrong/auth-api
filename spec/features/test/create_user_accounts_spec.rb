@@ -23,7 +23,7 @@ describe 'create user account for test' do
       token: token,
       attrs_set: [
         { parti: { email: 'one@email.com' }},
-        { parti: { email: 'two@email.com' }}
+        { parti: { email: 'two@email.com', password: 'Passw0rd!-two' }}
       ]
     )
 
@@ -31,7 +31,7 @@ describe 'create user account for test' do
     user_accounts_should_be_created(
       attrs_set: [
         { parti: { email: 'one@email.com' }},
-        { parti: { email: 'two@email.com' }}
+        { parti: { email: 'two@email.com', password: 'Passw0rd!-two' }}
       ]
     )
   end

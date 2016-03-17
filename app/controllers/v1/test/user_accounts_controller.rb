@@ -24,7 +24,7 @@ class V1::Test::UserAccountsController < ApplicationController
   end
 
   def create_params
-    params.permit attrs_set: [parti: [:email]]
+    params.permit attrs_set: [parti: [:email, :password]]
   end
 
   def destroy
