@@ -1,5 +1,5 @@
 class AccountSerializer < ActiveModel::Serializer
-  attribute :identifier, key: :id
+  attribute :identifier
   attributes :type
   def type
     object.type.underscore.dasherize

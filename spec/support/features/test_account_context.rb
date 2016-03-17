@@ -38,7 +38,7 @@ shared_context 'test_account' do
     last_account = Account.createds.last
     expect(last_response.body).to be_json_eql(<<-JSON)
     {
-      "id": "#{last_account.identifier}",
+      "identifier": "#{last_account.identifier}",
       "type": "test-account",
       "parti": {
         "email": "#{last_account.parti.user.email}",

@@ -9,7 +9,7 @@ describe AccountSerializer do
     expect(account_json).to have_json_path('parti')
     expect(account_json).to be_json_eql(<<-JSON)
       {
-        "id": "#{parti_account.identifier}",
+        "identifier": "#{parti_account.identifier}",
         "type": "user-account"
       }
     JSON
@@ -21,7 +21,7 @@ describe AccountSerializer do
     account_json = ActiveModel::SerializableResource.new(internal_account).to_json
     expect(account_json).to be_json_eql(<<-JSON)
       {
-        "id": "#{internal_account.identifier}",
+        "identifier": "#{internal_account.identifier}",
         "type": "user-account"
       }
     JSON
@@ -32,7 +32,7 @@ describe AccountSerializer do
     account_json = ActiveModel::SerializableResource.new(null_account).to_json
     expect(account_json).to be_json_eql(<<-JSON)
       {
-        "id": "#{null_account.identifier}",
+        "identifier": "#{null_account.identifier}",
         "type": "null-account"
       }
     JSON
