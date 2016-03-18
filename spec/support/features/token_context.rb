@@ -1,5 +1,6 @@
 shared_context 'token' do
   include TokenHelper
+  include_context 'rack_test'
 
   def token_is_granted(params)
     access_token = params[:account].access_tokens.create(:client => params[:client])
@@ -7,6 +8,13 @@ shared_context 'token' do
       access_token.scopes << Scope.where('name IN (?)', params[:scope].split)
     end
     access_token.token
+  end
+
+  def access_token_is_granted(account:, client:, scopes: [])
+    access_token = account.access_tokens.build client: client
+    access_token.scopes << Scope.where('name IN (?)', scopes)
+    access_token.save!
+    access_token
   end
 
   def token_is_granted_by_client_credentials(client:)
@@ -40,6 +48,11 @@ shared_context 'token' do
     post '/v1/tokens', grant_type: 'client_credentials'
   end
 
+  def introspect_token(target_token:, access_token: nil)
+    header 'Authorization', "Bearer #{access_token}"
+    post '/v1/introspect', token: target_token
+  end
+
   def response_should_render_tokens
     expect(last_response.status).to eq(200)
     token_response = JSON.parse(last_response.body).transform_keys do |key|
@@ -61,6 +74,27 @@ shared_context 'token' do
     expect(token_response[:token_type]).to be_present
     expect(token_response[:expires_in]).to be_present
     token_response
+  end
+
+  def response_should_render_token_introspection(token:)
+    response_should_be_200_ok_json
+    expect(last_response.body).to be_json_eql(<<-JSON)
+      {
+        "active": #{token.expires_at >= Time.now.utc ? 'true' : 'false'},
+        "exp": #{token.expires_at.to_i},
+        "scope": "#{token.scopes.map(&:name).join(' ')}",
+        "token_type": "bearer"
+      }
+    JSON
+  end
+
+  def response_should_render_inactive_introspection
+    response_should_be_200_ok_json
+    expect(last_response.body).to be_json_eql(<<-JSON)
+      {
+        "active": false
+      }
+    JSON
   end
 
   def tokens_should_be_granted(params)

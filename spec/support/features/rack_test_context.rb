@@ -24,8 +24,7 @@ shared_context 'rack_test' do
   end
 
   def response_should_be_false
-    response_should_be_200_ok
-    response_should_be_json
+    response_should_be_200_ok_json
     expect(last_response.body).to be_json_eql('false')
   end
 
@@ -34,8 +33,12 @@ shared_context 'rack_test' do
   end
 
   def response_should_be_true
+    response_should_be_200_ok_json
+    expect(last_response.body).to be_json_eql('true')
+  end
+
+  def response_should_be_200_ok_json
     response_should_be_200_ok
     response_should_be_json
-    expect(last_response.body).to be_json_eql('true')
   end
 end

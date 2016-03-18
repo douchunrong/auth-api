@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     end
     resources :authorizations, only: :create
     post 'tokens', to: proc { |env| TokenEndpoint.new.call(env) }
+    post 'introspect', to: 'tokens#introspect'
 
     if Rails.env.test?
       namespace :test do
