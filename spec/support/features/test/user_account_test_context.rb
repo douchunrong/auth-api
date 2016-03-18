@@ -22,12 +22,12 @@ shared_context 'user_account_test' do
     get '/v1/test/user-accounts', params
   end
 
-  def grant_access_token_for_user_account(identifier:, token: nil, scope: nil)
+  def grant_access_token_for_test(identifier:, token: nil, scopes: [])
     if token
         header 'Authorization', "Bearer #{token}"
     end
     post "/v1/test/user-accounts/#{identifier}/tokens",
-      { scope: scope }.to_json,
+      { scopes: scopes }.to_json,
       'CONTENT_TYPE' => 'application/json'
   end
 

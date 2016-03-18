@@ -15,7 +15,7 @@ class V1::Test::UserAccountsController < ApplicationController
   end
 
   def index_params
-    where_json = params[:where] || "{}"
+    where_json = params[:where] || '{}'
     begin
       where = JSON.parse(where_json)
     rescue JSON::ParserError
@@ -46,10 +46,11 @@ class V1::Test::UserAccountsController < ApplicationController
   end
 
   def create_token
-    account = UserAccount.find_by_identifier! create_token_params[:identifier]
+    identifier, scope_names = create_token_params.values_at :identifier, :scopes
+    account = UserAccount.find_by_identifier! identifier
     token = account.access_tokens.build client: current_token.client
-    scopes = create_token_params[:scope].split(' ').map do |scope_name|
-      Scope.find_by_name! scope_name
+    scopes = scope_names.map do |name|
+      Scope.find_by_name! name
     end
     token.scopes << scopes
     account.save!
@@ -57,6 +58,6 @@ class V1::Test::UserAccountsController < ApplicationController
   end
 
   def create_token_params
-    params.permit :identifier, :scope
+    params.permit :identifier, scopes: []
   end
 end

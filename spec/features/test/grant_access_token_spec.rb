@@ -1,6 +1,6 @@
 require 'rails_helper.rb'
 
-describe 'grant access_token for user account for test' do
+describe 'grant access_token for test' do
   include_context 'feature'
 
   it 'grant account_token' do
@@ -8,9 +8,9 @@ describe 'grant access_token for user account for test' do
     token = token_is_granted_by_client_credentials client: client
     account = user_account_exists parti: { email: 'account@email.com' }
 
-    grant_access_token_for_user_account(
+    grant_access_token_for_test(
       identifier: account.identifier,
-      scope: Scope::CREATE_CLIENT,
+      scopes: [ Scope::CREATE_CLIENT ],
       token: token
     )
 
@@ -19,16 +19,16 @@ describe 'grant access_token for user account for test' do
       access_token: response[:access_token],
       account: account,
       client: client,
-      scopes: [Scope::CREATE_CLIENT]
+      scopes: [ Scope::CREATE_CLIENT ]
     )
   end
 
   it 'responds 401 without token' do
     account = user_account_exists parti: { email: 'account@email.com' }
 
-    grant_access_token_for_user_account(
+    grant_access_token_for_test(
       identifier: account.identifier,
-      scope: Scope::CREATE_CLIENT
+      scopes: [ Scope::CREATE_CLIENT ]
     )
     response_should_be_401_unauthorized
   end
