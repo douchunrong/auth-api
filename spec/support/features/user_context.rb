@@ -15,27 +15,6 @@ shared_context 'user' do
       .transform_keys { |key| key.parameterize.underscore.to_sym }
   end
 
-  def create_users_for_for_test(token: nil, attrs_set: [{}])
-    if token
-      header 'Authorization', "Bearer #{token}"
-    end
-    post "/v1/test/users", { attrs_set: attrs_set }, { 'Content-Type' => 'application/json' }
-  end
-
-  def delete_user_for_test(token: nil, user_id:)
-    if token
-      header 'Authorization', "Bearer #{token}"
-    end
-    delete "/v1/test/users/#{user_id}"
-  end
-
-  def list_users_for_test(token: nil, **attrs)
-    if token
-      header 'Authorization', "Bearer #{token}"
-    end
-    get '/v1/test/users', attrs
-  end
-
   def user_should_be_created(params)
     last_user = User.createds.last
     expect(last_user.email).to eq(params[:email])
