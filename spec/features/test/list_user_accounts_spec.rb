@@ -36,6 +36,14 @@ describe 'list user accounts for test' do
     response_should_render_user_accounts [ wally_account ]
   end
 
+  it 'lists all user_accounts with empty where' do
+    list_user_accounts_for_test(
+      where: {}.to_json,
+      token: @token
+    )
+    response_should_render_user_accounts UserAccount.all
+  end
+
   it 'lists empty with parti email not exists' do
     user_accounts_not_exist parti: { email: 'wally@email.com' }
 
@@ -49,14 +57,21 @@ describe 'list user accounts for test' do
     response_should_render_user_accounts []
   end
 
-  it 'list empty with invalid parti params' do
+  it 'list all user_accounts with invalid parti params' do
     list_user_accounts_for_test(
       where: {
         parti: 'invalid-parti-attrs'
       }.to_json,
       token: @token
     )
-    response_should_render_user_accounts []
+    response_should_render_user_accounts UserAccount.all
+  end
+
+  it 'list all user_accounts without where parameter' do
+    list_user_accounts_for_test(
+      token: @token
+    )
+    response_should_render_user_accounts UserAccount.all
   end
 
   it 'responds 400 bad request with invalid json' do
