@@ -10,6 +10,7 @@ shared_context 'feature' do
   include_context 'user_account'
   include_context 'user_account_test'
   include_context 'user_auth'
+  include_context 'user_test'
 
   before :each do
     ApplicationRecordTest.clear_createds

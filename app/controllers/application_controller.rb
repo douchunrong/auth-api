@@ -3,6 +3,7 @@ class ApplicationController < ActionController::API
   include Concerns::Authentication
 
   rescue_from ActionController::BadRequest, :with => :bad_request
+  rescue_from ActionController::ParameterMissing, :with => :bad_request
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
 
   def bad_request(error)
