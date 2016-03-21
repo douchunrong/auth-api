@@ -7,7 +7,7 @@ class V1::ClientsController < ApplicationController
     end
 
     current_token.account
-    client = Client.new(client_params)
+    client = Client.new(create_client_params)
     client.user_account = current_token.account
     client.save!
     render status: 201, json: client
@@ -15,7 +15,9 @@ class V1::ClientsController < ApplicationController
 
   private
 
-  def client_params
-    params.require(:client).permit(:name, { redirect_uris: [] })
+  def create_client_params
+    client_params = params.require :client
+    client_params.require :name
+    client_params.permit :name, { redirect_uris: [] }
   end
 end
