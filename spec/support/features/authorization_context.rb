@@ -26,7 +26,6 @@ shared_context 'authorization' do
 
     post '/v1/authorizations',
       client_id: params[:client_id],
-      client_secret: params[:client_secret],
       nonce: params[:nonce],
       response_type: 'code',
       state: params[:state]

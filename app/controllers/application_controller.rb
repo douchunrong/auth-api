@@ -4,6 +4,7 @@ class ApplicationController < ActionController::API
 
   rescue_from ActionController::BadRequest, :with => :bad_request
   rescue_from ActionController::ParameterMissing, :with => :bad_request
+  rescue_from Rack::OAuth2::Server::Abstract::BadRequest, :with => :bad_request
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
 
   def bad_request(error)
