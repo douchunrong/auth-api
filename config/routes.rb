@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   health_check_routes
 
   get '.well-known/openid-configuration', to: 'discoveries#openid_configuration'
+  get '.well-known/webfinger', to: 'discoveries#webfinger'
 
   namespace :v1 do
     mount_devise_token_auth_for 'User', at: 'users', skip: [:omniauth_callbacks]

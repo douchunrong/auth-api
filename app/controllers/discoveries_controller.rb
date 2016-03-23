@@ -1,6 +1,17 @@
 class DiscoveriesController < ApplicationController
   AUTH_UI_BASE_URL = 'http://localhost:8080'
 
+  def webfinger
+    jrd = {
+      links: [{
+        rel: OpenIDConnect::Discovery::Provider::Issuer::REL_VALUE,
+        href: IdToken.config[:issuer]
+      }]
+    }
+    jrd[:subject] = params[:resource] if params[:resource].present?
+    render json: jrd, content_type: Mime::JRD
+  end
+
   def openid_configuration
     config = OpenIDConnect::Discovery::Provider::Config::Response.new(
       issuer: IdToken.config[:issuer],
