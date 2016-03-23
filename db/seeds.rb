@@ -45,6 +45,18 @@ unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_U
   )
 end
 
+unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_EXAMPE_CLIENT_NAME
+  client = Client.create!(
+    name: Client::PARTI_AUTH_EXAMPE_CLIENT_NAME,
+    redirect_uris: 'http://localhost:5000/parti/callback',
+    user_account: internal_account,
+  )
+  client.update(
+    identifier: '14b54b09ac8087b73e8a83be58ed8293',
+    secret: '8a61e801e69e31cba8d358dd560b30b64e1db995450d9dd0399e195462155b9a'
+  )
+end
+
 ['openid', 'profile', 'email', 'create_client'].each do |name|
   unless Scope.find_by name: name
     Scope.create! name: name
