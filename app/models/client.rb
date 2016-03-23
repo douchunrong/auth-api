@@ -15,6 +15,16 @@ class Client < ApplicationRecord
   validates :secret, presence: true
   validates :name, presence: true
 
+  class << self
+    def available_response_types
+      ['code']
+    end
+
+    def available_grant_types
+      ['authorization_code']
+    end
+  end
+
   private
 
   def setup
