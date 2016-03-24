@@ -8,11 +8,8 @@ shared_context 'authorization' do
       auth_params[:redirect_uri] = auth_params[:client].redirect_uris.first
     end
     authorization = account.authorizations.create! auth_params
-    if params[:scope]
-      scopes = params[:scope].split.map do |name|
-        Scope.find_by_name!(name)
-      end
-      authorization.scopes << scopes
+    if params[:scopes]
+      authorization.scopes << params[:scopes].map{ |s| Scope.find_by_name! s }
     end
     authorization
   end
@@ -24,20 +21,20 @@ shared_context 'authorization' do
       header 'client', params[:user_auth_token][:client]
     end
 
-    post '/v1/authorizations',
-      client_id: params[:client_id],
-      nonce: params[:nonce],
-      response_type: 'code',
-      state: params[:state]
+    data = { response_type: 'code' }
+    .merge params.slice(:client_id, :nonce, :state)
+    .merge params.slice(:scopes).map{ |k,v| [ :scope, v.respond_to?(:join) ? v.join(' ') : v ] }.to_h
+
+    post '/v1/authorizations', data
   end
 
   def authorization_code_should_be_granted(params)
     expect(last_response).to be_redirect
     auth_params = extract_authorization_params(last_response.headers['Location'])
     expect(auth_params[:state]).to eq(params[:state])
+
     authorization_code_should_be_valid(
-      code: auth_params[:code],
-      nonce: params[:nonce]
+      auth_params.slice(:code).merge params.slice(:nonce, :scopes)
     )
   end
 
@@ -45,6 +42,9 @@ shared_context 'authorization' do
     authorization = Authorization.valid.find_by_code params[:code]
     expect(authorization).not_to be_nil
     expect(authorization.nonce).to eq(params[:nonce])
+    if params[:scopes]
+      expect(authorization.scopes.map(&:name)).to match_array(params[:scopes])
+    end
   end
 
   def authorization_code_should_not_be_granted

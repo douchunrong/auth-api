@@ -5,15 +5,17 @@ shared_examples 'grant authorization code' do
 
   it 'grants authorization code' do
     request_authorization_code(
-      user_auth_token: @user_auth_token,
       client_id: @client.identifier,
+      nonce: 'nonce-random',
+      scopes: [Scope::OPENID],
       state: 'state-random',
-      nonce: 'nonce-random'
+      user_auth_token: @user_auth_token
     )
 
     authorization_code_should_be_granted(
       nonce: 'nonce-random',
-      state: 'state-random'
+      state: 'state-random',
+      scopes: [Scope::OPENID]
     )
   end
 

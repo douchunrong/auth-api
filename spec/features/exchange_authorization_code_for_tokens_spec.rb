@@ -9,7 +9,7 @@ describe 'Exchanges authorization code for tokens' do
     @authorization = authorization_code_is_granted(
       account: @account,
       client: @client,
-      scope: Scope::OPENID,
+      scopes: [ Scope::OPENID ],
       nonce: 'nonce-random'
     )
   end
