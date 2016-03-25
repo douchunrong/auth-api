@@ -1,5 +1,5 @@
 development: &defaults
-  issuer: http://auth-api.dev
+  issuer: http://localhost:3030
 
 test:
   <<: *defaults
