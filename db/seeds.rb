@@ -48,7 +48,10 @@ end
 unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_EXAMPE_CLIENT_NAME
   client = Client.create!(
     name: Client::PARTI_AUTH_EXAMPE_CLIENT_NAME,
-    redirect_uris: 'http://localhost:5000/parti/callback',
+    redirect_uris: [
+      'http://localhost:5000/auth/parti/callback',
+      'http://localhost:5000/parti_callback'
+    ],
     user_account: internal_account,
   )
   client.update(
