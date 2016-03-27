@@ -60,6 +60,18 @@ unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_E
   )
 end
 
+unless Client.find_by user_account: internal_account, name: Client::PARTI_USERS_API_TEST_CLIENT_NAME
+  client = Client.create!(
+    name: Client::PARTI_USERS_API_TEST_CLIENT_NAME,
+    redirect_uris: [],
+    user_account: internal_account,
+  )
+  client.update(
+    identifier: '46e506ea5125e2dd202d6318687d5d24',
+    secret: 'a0171ed5e691cd444f1f3a164b278228612ffb690b2176b7f13f82f8f23af06b'
+  )
+end
+
 ['openid', 'profile', 'email', 'create_client'].each do |name|
   unless Scope.find_by name: name
     Scope.create! name: name
