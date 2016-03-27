@@ -7,7 +7,7 @@ class V1::Test::UserAccountsController < ApplicationController
     where = index_params[:where]
     parti_attrs = where[:parti]
     if parti_attrs
-      accounts = UserAccount.joins(parti: :user).where(users: parti_attrs)
+      accounts = UserAccount.joins(:parti).where(connect_parti: parti_attrs)
     else
       accounts = UserAccount.where where
     end
@@ -32,7 +32,7 @@ class V1::Test::UserAccountsController < ApplicationController
   end
 
   def create_params
-    params.permit attrs_set: [parti: [:email, :password]]
+    params.permit attrs_set: [parti: [:identifier]]
   end
 
   def destroy

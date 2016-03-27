@@ -6,7 +6,7 @@ describe 'grant access_token for test' do
   it 'grant account_token' do
     client = client_exists
     token = token_is_granted_by_client_credentials client: client
-    account = user_account_exists parti: { email: 'account@email.com' }
+    account = user_account_exists
 
     grant_access_token_for_test(
       identifier: account.identifier,
@@ -24,7 +24,7 @@ describe 'grant access_token for test' do
   end
 
   it 'responds 401 without token' do
-    account = user_account_exists parti: { email: 'account@email.com' }
+    account = user_account_exists
 
     grant_access_token_for_test(
       identifier: account.identifier,

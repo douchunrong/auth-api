@@ -1,18 +1,34 @@
+require 'rails_helper'
+
 shared_context 'user' do
-  include Test::Factories::User
+  include PartiUrlHelper
   include_context 'sign_up'
 
   def user_not_exist(attrs)
     User.where(attrs).destroy_all
   end
 
-  def user_auth_token_exists(email:, password:)
-    post v1_user_session_path,
-      email: email,
-      password: password
-    expect(last_response.status).to eq(200)
-    last_response.headers.slice('access-token', 'client', 'uid')
-      .transform_keys { |key| key.parameterize.underscore.to_sym }
+  def user_token_exists(identifier:)
+    user_token = {
+      access_token: 'access_token',
+      client: 'client',
+      uid: 'uid',
+    }
+    stub_request(:get, users_api_url('/v1/users/validate_token')).with(
+      headers: {
+        'access-token': user_token[:access_token],
+        'client': user_token[:client],
+        'uid': user_token[:uid]
+      }
+    ).to_return(
+      body: {
+        success: true,
+        data: {
+          identifier: identifier
+        }
+      }.to_json
+    )
+    user_token
   end
 
   def user_should_be_created(params)

@@ -14,7 +14,7 @@ describe 'create user account for test' do
     user_accounts_should_be_created count: 1
   end
 
-  it 'create user accounts with parti email' do
+  it 'create user accounts with parti identifier' do
     client = client_exists
     token = token_is_granted_by_client_credentials client: client
     ApplicationRecordTest.clear_createds
@@ -22,16 +22,16 @@ describe 'create user account for test' do
     create_user_accounts_for_for_test(
       token: token,
       attrs_set: [
-        { parti: { email: 'one@email.com' }},
-        { parti: { email: 'two@email.com', password: 'Passw0rd!-two' }}
+        { parti: { identifier: 'identifier-1' }},
+        { parti: { identifier: 'identifier-2' }}
       ]
     )
 
     response_should_be_render_created_user_accounts
     user_accounts_should_be_created(
       attrs_set: [
-        { parti: { email: 'one@email.com' }},
-        { parti: { email: 'two@email.com', password: 'Passw0rd!-two' }}
+        { parti: { identifier: 'identifier-1' }},
+        { parti: { identifier: 'identifier-2' }}
       ]
     )
   end

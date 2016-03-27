@@ -4,9 +4,7 @@ class AccountSerializer < ActiveModel::Serializer
   def type
     object.type.underscore.dasherize
   end
-  has_one :parti do
-    object.parti.user if object.parti
-  end
+  has_one :parti
 
   def associations(*args)
     super.reject { |a| object.send(a.name).nil? }

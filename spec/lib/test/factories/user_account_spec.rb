@@ -5,13 +5,11 @@ describe Test::Factories::UserAccount do
 
   describe 'user_account_exists' do
     it 'creates records' do
-      user_count = User.count
       account_count = UserAccount.count
       parti_count = ConnectParti.count
 
       user_account_exists
 
-      expect(User.count).to eq(user_count + 1)
       expect(UserAccount.count).to eq(account_count + 1)
       expect(ConnectParti.count).to eq(parti_count + 1)
     end
@@ -21,23 +19,20 @@ describe Test::Factories::UserAccount do
       user_account_exists()
     end
 
-    it 'raises error calling twice with same email' do
-      user_account_exists parti: { email: 'same@email.com' }
-      expect {
-        user_account_exists parti: { email: 'same@email.com' }
-      }.to raise_error(ActiveRecord::StatementInvalid)
+    it 'creates with parti identifier' do
+      account = user_account_exists(
+        parti: { identifier: 'parti-identifier' }
+      )
+      expect(account.parti.identifier).to eq('parti-identifier')
     end
 
-    it 'creates with parti email' do
-      account = user_account_exists(
-        parti: {
-          email: 'parti@email.com',
-          password: 'PartiPass'
-        }
-      )
-      expect(account.parti.user.email).to eq('parti@email.com')
-      expect(account.parti.user).to be_confirmed
-      expect(account.parti.user.valid_password? 'PartiPass').to be true
+    it 'raises error creating with same identifier' do
+      user_account_exists parti: { identifier: 'same-identifier' }
+      account_count = UserAccount.count
+      expect {
+        user_account_exists parti: { identifier: 'same-identifier' }
+      }.to raise_error(ActiveRecord::RecordNotUnique)
+      expect(UserAccount.count).to eq(account_count)
     end
   end
 

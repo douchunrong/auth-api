@@ -2,23 +2,15 @@ shared_context 'user_account' do
   include Test::Factories::UserAccount
 
   def user_account_exists(attrs = {})
-    email = attrs.dig :parti, :email
-    if email
-      user_accounts_not_exist parti: { email: email }
-    end
+    user_accounts_not_exist(attrs)
     super attrs
   end
 
   def user_accounts_not_exist(attrs)
-    if attrs[:parti]
-      users = User.where(attrs[:parti])
-    else
-      users = User.none
-    end
+    parti_attrs = attrs[:parti] ? attrs[:parti] : {}
     UserAccount.joins(:parti)
-      .where(connect_parti: { user_id: users.pluck(:id) })
+      .where(connect_parti: parti_attrs)
       .destroy_all
-    users.destroy_all
   end
 
   def user_accounts_should_not_exist(attrs)

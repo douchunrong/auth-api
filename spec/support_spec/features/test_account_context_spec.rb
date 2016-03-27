@@ -14,9 +14,9 @@ describe 'test_account_exists' do
 
   it 'creates with parti user' do
     test_account = test_account_exists(
-      parti: { user: { email: 'user@email.com' } }
+      parti: { identifier: 'parti-identifier' }
     )
-    expect(test_account.parti.user.email).to eq('user@email.com')
+    expect(test_account.parti.identifier).to eq('parti-identifier')
   end
 end
 

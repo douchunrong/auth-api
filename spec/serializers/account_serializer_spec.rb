@@ -6,14 +6,16 @@ describe AccountSerializer do
   it 'serializes parti user account' do
     parti_account = user_account_exists parti: {}
     account_json = ActiveModel::SerializableResource.new(parti_account).to_json
-    expect(account_json).to have_json_path('parti')
+    # expect(account_json).to have_json_path('parti')
     expect(account_json).to be_json_eql(<<-JSON)
       {
         "identifier": "#{parti_account.identifier}",
-        "type": "user-account"
+        "type": "user-account",
+        "parti": {
+          "identifier": "#{parti_account.parti.identifier}"
+        }
       }
     JSON
-    .excluding('parti')
   end
 
   it 'serializes internal user account' do

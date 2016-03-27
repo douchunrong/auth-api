@@ -10,14 +10,7 @@ shared_context 'test_account' do
   end
 
   def test_account_exists(attrs = {})
-    FactoryGirl.create(:test_account, attrs.except(:parti)) do |account|
-      if attrs[:parti]
-        if attrs[:parti][:user]
-          user = FactoryGirl.create :user, attrs[:parti][:user]
-          account.create_parti account: account, user: user
-        end
-      end
-    end
+    FactoryGirl.create :test_account_parti, attrs
   end
 
   def create_test_account(client:, token: nil)
@@ -41,9 +34,7 @@ shared_context 'test_account' do
       "identifier": "#{last_account.identifier}",
       "type": "test-account",
       "parti": {
-        "email": "#{last_account.parti.user.email}",
-        "password": "#{last_account.parti.user.password}",
-        "created_at": "#{last_account.parti.user.created_at}"
+        "identifier": "#{last_account.parti.identifier}"
       }
     }
     JSON

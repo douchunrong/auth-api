@@ -65,11 +65,8 @@ shared_context 'user_account_test' do
         expect(account.attributes.symbolize_keys.slice(*account_attrs.keys)).to eq(account_attrs)
         parti_attrs = attrs[:parti]
         if parti_attrs
-          actual_attrs = account.parti.user.attributes.symbolize_keys.slice(*parti_attrs.keys)
+          actual_attrs = account.parti.attributes.symbolize_keys.slice(*parti_attrs.keys)
           expect(actual_attrs).to eq(parti_attrs.except(:password))
-          if parti_attrs[:password]
-            expect(account.parti.user.valid_password? parti_attrs[:password]).to be true
-          end
         end
       end
     end
@@ -78,7 +75,7 @@ shared_context 'user_account_test' do
   def user_account_should_be_deleted(attrs)
     parti_attrs = attrs[:parti]
     if parti_attrs
-      accounts = UserAccount.joins(parti: :user).where(users: parti_attrs)
+      accounts = UserAccount.joins(:parti).where(connect_parti: parti_attrs)
     else
       accounts = UserAccount.where(attrs)
     end

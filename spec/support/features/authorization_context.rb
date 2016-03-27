@@ -15,10 +15,10 @@ shared_context 'authorization' do
   end
 
   def request_authorization_code(params)
-    if params[:user_auth_token]
-      header 'uid', params[:user_auth_token][:uid]
-      header 'access-token', params[:user_auth_token][:access_token]
-      header 'client', params[:user_auth_token][:client]
+    if params[:user_token]
+      header 'uid', params[:user_token][:uid]
+      header 'access-token', params[:user_token][:access_token]
+      header 'client', params[:user_token][:client]
     end
 
     data = { response_type: 'code' }

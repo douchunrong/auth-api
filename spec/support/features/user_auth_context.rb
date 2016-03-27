@@ -1,6 +1,4 @@
 shared_context 'user_auth' do
-  include_context 'sign_in'
-
   def valid_user_token_exists(user:)
     sign_in_as user
     user_token_in_response(last_response)

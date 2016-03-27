@@ -9,7 +9,7 @@ describe 'list user accounts for test' do
   end
 
   it 'lists user_account by identifier' do
-    wally_account = user_account_exists parti: { email: 'wally@email.com' }
+    wally_account = user_account_exists parti: { identifier: 'wally-identifier' }
 
     list_user_accounts_for_test(
       where: {
@@ -18,21 +18,6 @@ describe 'list user accounts for test' do
       token: @token
     )
 
-    wally_account.parti.user.password = nil
-    response_should_render_user_accounts [ wally_account ]
-  end
-
-  it 'lists user_account by parti email' do
-    wally_account = user_account_exists parti: { email: 'wally@email.com' }
-
-    list_user_accounts_for_test(
-      where: {
-        parti: { email: 'wally@email.com' }
-      }.to_json,
-      token: @token
-    )
-
-    wally_account.parti.user.password = nil
     response_should_render_user_accounts [ wally_account ]
   end
 
@@ -44,12 +29,12 @@ describe 'list user accounts for test' do
     response_should_render_user_accounts UserAccount.all
   end
 
-  it 'lists empty with parti email not exists' do
-    user_accounts_not_exist parti: { email: 'wally@email.com' }
+  it 'lists empty with parti identifier not exists' do
+    user_accounts_not_exist parti: { identifier: 'wally-identifier' }
 
     list_user_accounts_for_test(
       where: {
-        parti: { email: 'wally@email.com' }
+        parti: { identifer: 'wally-identifier' }
       }.to_json,
       token: @token
     )
