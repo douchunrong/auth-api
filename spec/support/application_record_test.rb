@@ -1,5 +1,5 @@
 module ApplicationRecordTest
-  Models = [AccessToken, Account, Authorization, Client, User]
+  Models = [AccessToken, Account, Authorization, Client]
 
   def self.setup_createds
     Models.each do |klass|
