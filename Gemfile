@@ -16,7 +16,6 @@ gem 'pg'
 
 gem 'puma'
 
-gem 'rack-cors'
 gem 'rails', '5.0.0.beta2'
 
 group :development, :test do

@@ -29,16 +29,6 @@ module AuthApi
 
     config.autoload_paths += %W(#{config.root}/lib)
 
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins '*'
-        resource '*',
-          headers: :any,
-          :expose  => ['access-token', 'expiry', 'token-type', 'uid', 'client'],
-          methods: [:get, :post, :options]
-      end
-    end
-
     config.middleware.use Rack::OAuth2::Server::Resource::Bearer, 'OpenID Connect' do |req|
       AccessToken.valid.find_by(token: req.access_token) ||
       req.invalid_token!
