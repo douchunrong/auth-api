@@ -16,7 +16,7 @@ gem 'pg'
 
 gem 'puma'
 
-gem 'rails', '5.0.0.beta2'
+gem 'rails', '5.0.0.beta3'
 
 group :development, :test do
   gem 'byebug'
@@ -30,7 +30,8 @@ end
 group :test do
   gem 'json_spec'
   gem 'rack-test'
-  gem 'rspec-rails', '3.1.0'
+  gem 'rspec', '~> 3.5.0.beta2'
+  gem 'rspec-rails', '~> 3.5.0.beta2'
   gem 'timecop'
   gem 'webmock'
 end
