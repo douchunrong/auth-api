@@ -10,7 +10,7 @@ describe 'delete user_account for test' do
 
     delete_user_account_for_test(
       identifier: account.identifier,
-      token: token
+      token: token.token
     )
 
     response_should_be_204_no_content

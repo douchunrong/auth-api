@@ -9,7 +9,7 @@ describe 'Delete test account' do
     token = token_is_granted_by_client_credentials client: client
 
     delete_all_test_accounts(
-      token: token,
+      token: token.token,
       client_id: client.identifier
     )
 
@@ -23,7 +23,7 @@ describe 'Delete test account' do
     another_token = token_is_granted_by_client_credentials client: another_client
 
     delete_all_test_accounts(
-      token: another_token,
+      token: another_token.token,
       client_id: client.identifier
     )
 
@@ -45,7 +45,7 @@ describe 'Delete test account' do
     token = token_is_granted_by_client_credentials client: client
 
     delete_all_test_accounts(
-      token: token,
+      token: token.token,
       client_id: 'client-id-not-exist'
     )
     response_should_be_404_not_found

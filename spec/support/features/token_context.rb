@@ -23,10 +23,8 @@ shared_context 'token' do
       client_secret: client.secret
     )
     expect(last_response.status).to eq(200)
-    token_response = JSON.parse(last_response.body).transform_keys do |key|
-      key.parameterize.underscore.to_sym
-    end
-    token_response[:access_token]
+    token_response = JSON.parse(last_response.body).with_indifferent_access
+    AccessToken.find_by_token! token_response[:access_token]
   end
 
   def exchange_tokens(params)

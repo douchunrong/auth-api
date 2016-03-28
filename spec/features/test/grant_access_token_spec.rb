@@ -11,7 +11,7 @@ describe 'grant access_token for test' do
     grant_access_token_for_test(
       identifier: account.identifier,
       scopes: [ Scope::CREATE_CLIENT ],
-      token: token
+      token: token.token
     )
 
     response = response_should_render_granted_access_token

@@ -8,7 +8,7 @@ describe 'clean database for test' do
     client = client_exists
     token = token_is_granted_by_client_credentials client: client
 
-    clean_database_for_test token: token
+    clean_database_for_test token: token.token
 
     response_should_be_204_no_content
     database_should_be_clean

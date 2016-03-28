@@ -15,7 +15,7 @@ describe 'list user accounts for test' do
       where: {
         identifier: wally_account.identifier
       }.to_json,
-      token: @token
+      token: @token.token
     )
 
     response_should_render_user_accounts [ wally_account ]
@@ -24,7 +24,7 @@ describe 'list user accounts for test' do
   it 'lists all user_accounts with empty where' do
     list_user_accounts_for_test(
       where: {}.to_json,
-      token: @token
+      token: @token.token
     )
     response_should_render_user_accounts UserAccount.all
   end
@@ -36,7 +36,7 @@ describe 'list user accounts for test' do
       where: {
         parti: { identifer: 'wally-identifier' }
       }.to_json,
-      token: @token
+      token: @token.token
     )
 
     response_should_render_user_accounts []
@@ -47,14 +47,14 @@ describe 'list user accounts for test' do
       where: {
         parti: 'invalid-parti-attrs'
       }.to_json,
-      token: @token
+      token: @token.token
     )
     response_should_render_user_accounts UserAccount.all
   end
 
   it 'list all user_accounts without where parameter' do
     list_user_accounts_for_test(
-      token: @token
+      token: @token.token
     )
     response_should_render_user_accounts UserAccount.all
   end
@@ -62,7 +62,7 @@ describe 'list user accounts for test' do
   it 'responds 400 bad request with invalid json' do
     list_user_accounts_for_test(
       where: '[ { invalid-json } ]',
-      token: @token
+      token: @token.token
     )
 
     response_should_be_400_bad_request

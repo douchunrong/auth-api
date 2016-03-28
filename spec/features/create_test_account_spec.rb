@@ -8,7 +8,7 @@ describe 'Create test account' do
     token = token_is_granted_by_client_credentials client: client
 
     create_test_account(
-      token: token,
+      token: token.token,
       client: client
     )
 
@@ -21,7 +21,7 @@ describe 'Create test account' do
     token = token_is_granted_by_client_credentials client: client
 
     create_test_account(
-      token: token,
+      token: token.token,
       client: another_client
     )
 
