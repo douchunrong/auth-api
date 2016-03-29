@@ -6,11 +6,10 @@
 #
 default: &default
   adapter: postgresql
+  host: <%= ENV['DB_HOST'] || 'auth-db' %>
   pool: 5
   timeout: 5000
-  host: <%= ENV['DB_HOST'] %>
-  port: <%= ENV['DB_PORT'] || 5432 %>
-  username: <%= ENV['DB_USER'] %>
+  username: <%= ENV['DB_USER'] || 'postgres' %>
 
 development:
   <<: *default
