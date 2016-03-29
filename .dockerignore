@@ -1,4 +1,8 @@
-.git
+.*
 tmp/*
 log/*
 db/*.sqlite3
+config/projections.json
+deploy
+spec
+test
