@@ -44,15 +44,17 @@ class IdToken < ApplicationRecord
 
     def config
       unless @config
+        ENV['AUTH_API_PRIVATE_KEY_BASE64'] or raise 'Missing AUTH_API_PRIVATE_KEY_BASE64'
+        ENV['AUTH_API_CERTIFICATE_BASE64'] or raise 'Missing AUTH_API_CERTIFICATE_BASE64'
         config_path = File.join Rails.root, 'config/oidc/id_token'
         @config = YAML.load_file(File.join(config_path, 'issuer.yml'))[Rails.env].symbolize_keys
         @config[:jwks_uri] = Rails.application.routes.url_helpers.v1_jwks_url format: :json
         private_key = OpenSSL::PKey::RSA.new(
-          File.read(File.join(config_path, 'private.key')),
-          'pass-phrase'
+          Base64.decode64(ENV['AUTH_API_PRIVATE_KEY_BASE64']),
+          ENV['AUTH_API_PRIVATE_KEY_PASS_PHRASE']
         )
         cert = OpenSSL::X509::Certificate.new(
-          File.read(File.join(config_path, 'cert.pem'))
+          Base64.decode64(ENV['AUTH_API_CERTIFICATE_BASE64'])
         )
         @config[:kid] = :default
         @config[:public_key] = cert.public_key
