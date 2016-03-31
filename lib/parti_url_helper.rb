@@ -1,14 +1,14 @@
 module PartiUrlHelper
   def auth_api_url()
-    return "http://#{auth_api_host}:#{auth_api_port}"
+    "http://#{auth_api_host}:#{auth_api_port}"
   end
 
   def auth_api_host()
-    return ENV['AUTH_API_HOST'] || 'localhost'
+    ENV['AUTH_API_HOST'] or 'localhost'
   end
 
   def auth_api_port()
-    return ENV['AUTH_API_PORT'] || 3030
+    correct_docker_link_port ENV['AUTH_API_PORT'], 3030
   end
 
   def users_api_url(path = '/')
@@ -17,10 +17,24 @@ module PartiUrlHelper
   end
 
   def users_api_host()
-    return ENV['USERS_API_HOST'] || 'users-api.dev'
+    ENV['USERS_API_HOST'] or 'users-api.dev'
   end
 
   def users_api_port()
-    return ENV['USERS_API_PORT'] || 80
+    correct_docker_link_port ENV['USERS_API_PORT'], 3030
   end
+
+  private
+
+  def correct_docker_link_port(port, default)
+    case port
+    when /^(\d+)$/
+      $1.to_i
+    when /^tcp:\/\/.+:(\d+)$/
+      $1.to_i
+    else
+      default
+    end
+  end
+
 end
