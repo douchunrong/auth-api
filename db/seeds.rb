@@ -33,6 +33,18 @@ unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_A
   )
 end
 
+unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_UI_CLIENT_NAME
+  client = Client.create!(
+    name: Client::PARTI_AUTH_UI_CLIENT_NAME,
+    redirect_uris: [],
+    user_account: internal_account,
+  )
+  client.update(
+    identifier: 'a839a637cc38f01e42aec485b65da5ea',
+    secret: '307f53a54ad061995556c977b428c11c75ef181c3ad868cffc173cd9e48aaced',
+  )
+end
+
 unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_UI_TEST_CLIENT_NAME
   client = Client.create!(
     name: Client::PARTI_AUTH_UI_TEST_CLIENT_NAME,
@@ -69,6 +81,30 @@ unless Client.find_by user_account: internal_account, name: Client::PARTI_USERS_
   client.update(
     identifier: '46e506ea5125e2dd202d6318687d5d24',
     secret: 'a0171ed5e691cd444f1f3a164b278228612ffb690b2176b7f13f82f8f23af06b'
+  )
+end
+
+unless Client.find_by user_account: internal_account, name: Client::PARTI_USERS_UI_CLIENT_NAME
+  client = Client.create!(
+    name: Client::PARTI_USERS_UI_CLIENT_NAME,
+    redirect_uris: [],
+    user_account: internal_account,
+  )
+  client.update(
+    identifier: '3536acd7c4178ce2c8963361c73d57b4',
+    secret: 'e9efd649d02591f42015de807e052689941a0c683a473626c47f5ef111af48b8'
+  )
+end
+
+unless Client.find_by user_account: internal_account, name: Client::PARTI_USERS_UI_TEST_CLIENT_NAME
+  client = Client.create!(
+    name: Client::PARTI_USERS_UI_TEST_CLIENT_NAME,
+    redirect_uris: [],
+    user_account: internal_account,
+  )
+  client.update(
+    identifier: 'a248e649e8563f0d8a1eaa255f8c05ae',
+    secret: 'd5b1378e5854309c1d6e76d7e2c77dbee4bb3f1cab745f7e94cbc8370dea2460'
   )
 end
 

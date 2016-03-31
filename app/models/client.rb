@@ -1,8 +1,11 @@
 class Client < ApplicationRecord
   PARTI_AUTH_API_TEST_CLIENT_NAME = 'Parti Auth API Test'
-  PARTI_AUTH_UI_TEST_CLIENT_NAME = 'Parti Auth UI Test'
   PARTI_AUTH_EXAMPE_CLIENT_NAME = 'Parti Auth Example'
+  PARTI_AUTH_UI_CLIENT_NAME = 'Parti Auth UI'
+  PARTI_AUTH_UI_TEST_CLIENT_NAME = 'Parti Auth UI Test'
   PARTI_USERS_API_TEST_CLIENT_NAME = 'Parti Users API Test'
+  PARTI_USERS_UI_TEST_CLIENT_NAME = 'Parti Users UI Test'
+  PARTI_USERS_UI_CLIENT_NAME = 'Parti Users UI'
 
   belongs_to :user_account
   has_many :test_accounts, inverse_of: :client
