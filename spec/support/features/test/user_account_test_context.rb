@@ -26,8 +26,10 @@ shared_context 'user_account_test' do
     if token
         header 'Authorization', "Bearer #{token}"
     end
+    data = scopes.nil? ? {} : { scopes: scopes }
+
     post "/v1/test/user-accounts/#{identifier}/tokens",
-      { scopes: scopes }.to_json,
+      data.to_json,
       'CONTENT_TYPE' => 'application/json'
   end
 

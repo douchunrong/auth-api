@@ -49,8 +49,12 @@ class V1::Test::UserAccountsController < ApplicationController
     identifier, scope_names = create_token_params.values_at :identifier, :scopes
     account = UserAccount.find_by_identifier! identifier
     token = account.access_tokens.build client: current_token.client
-    scopes = scope_names.map do |name|
-      Scope.find_by_name! name
+    if scope_names
+      scopes = scope_names.map do |name|
+        Scope.find_by_name! name
+      end
+    else
+      scopes = []
     end
     token.scopes << scopes
     account.save!
