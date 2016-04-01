@@ -33,7 +33,7 @@ script:
   - RALIS_ENV=test bin/rails spec
 
 after_success:
-  - docker build -t $AUTH_API_REPO:$APP_VERSION .
+  - ./deploy/build-docker-image.bash
   - docker push $AUTH_API_REPO:$APP_VERSION
 
 integrations:

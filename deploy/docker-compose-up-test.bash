@@ -13,10 +13,8 @@ script_dir() {
 }
 
 SCRIPT_DIR=$( script_dir )
-DOCKER_REPO=partixyz/auth-api
-APP_VERSION=${APP_VERSION:-$( git describe --tags --long )}
+ROOT_DIR=$( dirname $SCRIPT_DIR )
 
-docker build -t ${DOCKER_REPO}:${APP_VERSION} ${SCRIPT_DIR}/..
-docker tag ${DOCKER_REPO}:${APP_VERSION} $DOCKER_REPO:current
-
-
+docker-compose -f ${SCRIPT_DIR}/docker-compose-test.yml up -d db
+sleep 2
+docker-compose -f ${SCRIPT_DIR}/docker-compose-test.yml run --rm auth-api bin/rails db:setup
