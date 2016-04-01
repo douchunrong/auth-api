@@ -9,7 +9,7 @@ describe 'list user accounts for test' do
   end
 
   it 'lists user_account by identifier' do
-    wally_account = user_account_exists parti: { identifier: 'wally-identifier' }
+    wally_account = user_account_exists
 
     list_user_accounts_for_test(
       where: {
@@ -29,12 +29,24 @@ describe 'list user accounts for test' do
     response_should_render_user_accounts UserAccount.all
   end
 
-  it 'lists empty with parti identifier not exists' do
-    user_accounts_not_exist parti: { identifier: 'wally-identifier' }
+  it 'lists user_account with parti identifier' do
+    user_account = user_account_exists parti: { identifier: 'user-identifier' }
 
     list_user_accounts_for_test(
       where: {
-        parti: { identifer: 'wally-identifier' }
+        parti: { identifier: 'user-identifier' }
+      }.to_json,
+      token: @token.token
+    )
+    response_should_render_user_accounts [ user_account ]
+  end
+
+  it 'lists empty with not-exist parti identifier' do
+    user_accounts_not_exist parti: { identifier: 'not-exist-identifier' }
+
+    list_user_accounts_for_test(
+      where: {
+        parti: { identifer: 'not-exist-identifier' }
       }.to_json,
       token: @token.token
     )

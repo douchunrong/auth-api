@@ -22,7 +22,7 @@ class V1::Test::UserAccountsController < ApplicationController
       raise ActionController::BadRequest.new 'Invalid json format for where parameter'
     end
     nparams = ActionController::Parameters.new where: where
-    { where: nparams.fetch(:where).permit([:id, :identifier, parti: [:email]]).to_h.compact }
+    { where: nparams.fetch(:where).permit([:id, :identifier, parti: [:identifier]]).to_h.compact }
   end
 
   def create
