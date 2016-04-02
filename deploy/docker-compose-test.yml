@@ -21,5 +21,6 @@ users-api:
   image: partixyz/users-api:0.1.0-21-g24dc22d
   links:
     - db:users-db
+    - auth-api
   ports:
     - 3031:3030

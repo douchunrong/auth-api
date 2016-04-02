@@ -17,7 +17,9 @@ class V1::ClientsController < ApplicationController
 
   def create_client_params
     client_params = params.require :client
-    client_params.require :name
-    client_params.permit :name, { redirect_uris: [] }
+    permitted = client_params.permit :name, { redirect_uris: [] }
+    permitted.require :name
+    permitted.require :redirect_uris
+    permitted
   end
 end

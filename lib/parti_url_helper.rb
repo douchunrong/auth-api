@@ -17,7 +17,7 @@ module PartiUrlHelper
   end
 
   def users_api_host()
-    ENV['USERS_API_HOST'] or 'users-api.dev'
+    ENV['USERS_API_HOST'] or 'users-api'
   end
 
   def users_api_port()

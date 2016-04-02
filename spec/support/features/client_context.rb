@@ -14,7 +14,9 @@ shared_context 'client' do
 
   def create_client(params)
     client_params = params.slice(:redirect_uris, :name)
-    header 'Authorization', "Bearer #{params[:token]}"
+    if params[:token]
+      header 'Authorization', "Bearer #{params[:token]}"
+    end
     post '/v1/clients', client: client_params
   end
 
