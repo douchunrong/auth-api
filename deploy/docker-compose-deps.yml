@@ -7,6 +7,8 @@ users-api:
     - AUTH_API_HOST
     - DB_USER=postgres
     - RAILS_ENV
+    - USERS_API_CLIENT_ID
+    - USERS_API_CLIENT_SECRET
     - USERS_API_EXTERNAL_HOST=external.users-api
     - USERS_API_EXTERNAL_PORT=3031
   image: partixyz/users-api:0.2.0-8-g5cdaf57
