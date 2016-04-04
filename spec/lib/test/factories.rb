@@ -1,9 +1,6 @@
 require 'factories'
 
 FactoryGirl.define do
-  factory :user_account do
-  end
-
   factory :user_account_parti, parent: :user_account do
     transient do
       parti nil
