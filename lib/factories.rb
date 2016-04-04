@@ -38,4 +38,16 @@ FactoryGirl.define do
     association :account, factory: :user_account, strategy: :build
     identifier { "identifier-#{seq}" }
   end
+
+  factory :user_account_parti, parent: :user_account do
+    transient do
+      parti nil
+    end
+
+    after :build do |account, evaluator|
+      parti_attrs = evaluator.parti.nil? ? {} : evaluator.parti
+      parti_attrs.merge account: account
+      account.parti = build :connect_parti, parti_attrs
+    end
+  end
 end

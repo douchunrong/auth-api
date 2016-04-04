@@ -1,4 +1,4 @@
-require 'test/factories'
+require 'factories'
 
 module Test::Factories::UserAccount
   def user_accounts_exist(attrs_set = [{}], **options)
