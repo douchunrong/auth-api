@@ -1,3 +1,5 @@
+require 'token_endpoint'
+
 Rails.application.routes.draw do
   health_check_routes
 
