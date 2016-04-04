@@ -26,7 +26,7 @@ describe Test::Factories::UserAccount do
       expect(account.parti.identifier).to eq('parti-identifier')
     end
 
-    it 'raises error creating with same identifier' do
+    xit 'raises error creating with same identifier' do
       user_account_exists parti: { identifier: 'same-identifier' }
       account_count = UserAccount.count
       expect {
