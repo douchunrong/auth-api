@@ -13,5 +13,10 @@ script_dir() {
 }
 
 SCRIPT_DIR=$( script_dir )
+ROOT_DIR=$( dirname $SCRIPT_DIR )
 
-docker-compose -f ${DOCKER_COMPOSE_FILE} "$@"
+DOCKER_COMPOSE_FILE=${SCRIPT_DIR}/docker-compose-deps.yml
+
+docker-compose -f ${DOCKER_COMPOSE_FILE} up -d db
+sleep 2
+docker-compose -f ${DOCKER_COMPOSE_FILE} run --rm users-api bin/rails db:setup
