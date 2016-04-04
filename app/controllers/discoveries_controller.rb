@@ -1,7 +1,4 @@
 class DiscoveriesController < ApplicationController
-  AUTH_UI_BASE_URL = 'http://localhost:8080'
-  AUTH_UI_AUTHORIZATION_ENDPOINT = URI.join(AUTH_UI_BASE_URL, '/authorizations').to_s
-
   def webfinger
     jrd = {
       links: [{
@@ -16,7 +13,7 @@ class DiscoveriesController < ApplicationController
   def openid_configuration
     config = OpenIDConnect::Discovery::Provider::Config::Response.new(
       issuer: IdToken.config[:issuer],
-      authorization_endpoint: AUTH_UI_AUTHORIZATION_ENDPOINT,
+      authorization_endpoint: ENV['AUTHORIZATION_ENDPOINT'],
       token_endpoint: v1_tokens_url,
       userinfo_endpoint: 'http://user_info.url',
       jwks_uri: IdToken.config[:jwks_uri],
