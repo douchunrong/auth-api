@@ -1,11 +1,11 @@
 auth-api:
+  build: ..
   environment:
     - AUTH_API_CERTIFICATE_BASE64
     - AUTH_API_PRIVATE_KEY_BASE64
     - AUTH_API_PRIVATE_KEY_PASS_PHRASE
     - DB_USER=postgres
     - RAILS_ENV=test
-  image: partixyz/auth-api:current
   links:
     - db:auth-db
   ports:
