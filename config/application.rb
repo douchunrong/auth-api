@@ -29,7 +29,9 @@ module AuthApi
 
     config.autoload_paths += %W(#{config.root}/lib)
 
-    config.logger = Logger.new(STDOUT)
+    if ENV['RAILS_LOG_TO_STDOUT'].present?
+      config.logger = Logger.new STDOUT
+    end
 
     config.middleware.use Rack::OAuth2::Server::Resource::Bearer, 'OpenID Connect' do |req|
       AccessToken.valid.find_by(token: req.access_token) ||
