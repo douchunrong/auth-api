@@ -48,9 +48,11 @@ class IdToken < ApplicationRecord
         ENV['AUTH_API_PRIVATE_KEY_BASE64_2'] or raise 'Missing AUTH_API_PRIVATE_KEY_BASE64_2'
         ENV['AUTH_API_CERTIFICATE_BASE64'] or raise 'Missing AUTH_API_CERTIFICATE_BASE64'
         pk_base64 = ENV['AUTH_API_PRIVATE_KEY_BASE64_1'] + ENV['AUTH_API_PRIVATE_KEY_BASE64_2']
+
         config_path = File.join Rails.root, 'config/oidc/id_token'
-        @config = YAML.load_file(File.join(config_path, 'issuer.yml'))[Rails.env].symbolize_keys
+        @config = YAML.load(ERB.new(File.read(File.join(config_path, 'issuer.yml'))).result)[Rails.env].symbolize_keys
         @config[:jwks_uri] = Rails.application.routes.url_helpers.v1_jwks_url format: :json
+
         private_key = OpenSSL::PKey::RSA.new(
           Base64.decode64(pk_base64),
           ENV['AUTH_API_PRIVATE_KEY_PASS_PHRASE']

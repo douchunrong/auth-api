@@ -1,9 +1,11 @@
-development: &defaults
-  issuer: http://localhost:3030
+default: &defaults
+  issuer: <%= "http://#{ENV['AUTH_API_EXTERNAL_HOST'] || 'localhost'}:#{ENV['AUTH_API_EXTERNAL_PORT'] || '3030'}" %>
+
+development:
+  <<: *defaults
 
 test:
   <<: *defaults
 
 production:
   <<: *defaults
-  issuer: http://api.auth.parti.xyz
