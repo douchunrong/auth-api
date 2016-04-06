@@ -1,3 +1,5 @@
+require 'authorization_endpoint'
+
 class V1::AuthorizationsController < ApplicationController
   include PartiUrlHelper
   # before_action :authenticate_v1_user!, only: [:create]
