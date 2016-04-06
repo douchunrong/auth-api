@@ -10,6 +10,10 @@ describe 'ENV variables', smoke: true do
     it { expect(ENV['AUTH_API_CERTIFICATE_BASE64']).to be_present }
   end
 
+  describe 'AUTHORIZATION_ENDPOINT' do
+    it { expect(ENV['AUTHORIZATION_ENDPOINT']).to be_present }
+  end
+
   describe 'openid issuer' do
     before :each do
       if IdToken.instance_variable_get(:@config)
