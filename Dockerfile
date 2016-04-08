@@ -8,6 +8,7 @@ RUN gem install bundler && bundle install --without development test --deploymen
 
 COPY . ./
 
-EXPOSE 3030
+COPY deploy/docker-cmd.sh /
 
-CMD (test -f /volume/shared/is_leader && bin/rake db:migrate); bin/rails server -p 3030 -b 0.0.0.0
+EXPOSE 3030
+CMD ["/docker-cmd.sh"]
