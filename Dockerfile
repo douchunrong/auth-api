@@ -8,7 +8,5 @@ RUN gem install bundler && bundle install --without development test --deploymen
 
 COPY . ./
 
-COPY deploy/docker-cmd.sh /
-
 EXPOSE 3030
-CMD ["/docker-cmd.sh"]
+CMD ["bin/docker-cmd.sh"]
