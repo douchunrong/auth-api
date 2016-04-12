@@ -7,8 +7,11 @@ class V1::TokensController < ApplicationController
       token_model = AccessToken.find_by_token! token_param
       introspection = {
         active: token_model.expires_at >= Time.now,
+        connect_id: token_model.account.connect_id,
+        connect_type: token_model.account.connect_type,
         exp: token_model.expires_at.to_i,
         scope: token_model.scopes.map(&:name).join(' '),
+        sub: token_model.account.identifier,
         token_type: 'bearer'
       }
     else

@@ -79,8 +79,11 @@ shared_context 'token' do
     expect(last_response.body).to be_json_eql(<<-JSON)
       {
         "active": #{token.expires_at >= Time.now.utc ? 'true' : 'false'},
+        "connect_id": "#{token.account.connect_id}",
+        "connect_type": "#{token.account.connect_type}",
         "exp": #{token.expires_at.to_i},
         "scope": "#{token.scopes.map(&:name).join(' ')}",
+        "sub": "#{token.account.identifier}",
         "token_type": "bearer"
       }
     JSON

@@ -14,6 +14,18 @@ class Account < ApplicationRecord
     super
   end
 
+  def connect_type
+    return 'parti' if parti
+    return 'internal' if internal
+    return ''
+  end
+
+  def connect_id
+    return parti.identifier if parti
+    return 'internal' if internal.name
+    return ''
+  end
+
   private
 
   def setup
