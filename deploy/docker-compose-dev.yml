@@ -1,0 +1,40 @@
+auth-api:
+  build: ..
+  dockerfile: deploy/Dockerfile.dev
+  environment:
+    - AUTH_API_CERTIFICATE_BASE64
+    - AUTH_API_PRIVATE_KEY_BASE64_1
+    - AUTH_API_PRIVATE_KEY_BASE64_2
+    - AUTH_API_PRIVATE_KEY_PASS_PHRASE
+    - AUTHORIZATION_ENDPOINT
+    - DB_USER=postgres
+    - RAILS_ENV=test
+  links:
+    - db:auth-db
+  ports:
+    - 3030:3030
+  volumes:
+    - ..:/parti/auth-api
+db:
+  image: postgres:9.4
+  ports:
+    - 5432:5432
+users-api:
+  environment:
+    - DB_USER=postgres
+    - RAILS_ENV=test
+  image: partixyz/users-api:0.2.1-1-g2c9254b
+  links:
+    - db:users-db
+    - auth-api
+  ports:
+    - 3031:3030
+add-host-to-docker:
+  environment:
+    - CONTAINER=auth-api
+    - HOST=users-api
+  image: partixyz/add-host-to-docker:0.1.0-0-g6efd247
+  links:
+    - users-api
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
