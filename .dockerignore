@@ -4,5 +4,6 @@ log/*
 db/*.sqlite3
 config/projections.json
 deploy
+!deploy/docker-cmd.sh
 spec
 test
