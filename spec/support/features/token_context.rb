@@ -74,14 +74,16 @@ shared_context 'token' do
     token_response
   end
 
-  def response_should_render_token_introspection(token:)
+  def token_introspection_should_be_rendered(token:)
     response_should_be_200_ok_json
+    expect(token.account).not_to be_kind_of NullAccount
     expect(last_response.body).to be_json_eql(<<-JSON)
       {
         "active": #{token.expires_at >= Time.now.utc ? 'true' : 'false'},
         "connect_id": "#{token.account.connect_id}",
         "connect_type": "#{token.account.connect_type}",
         "exp": #{token.expires_at.to_i},
+        "grant_type": "authorization_code",
         "scope": "#{token.scopes.map(&:name).join(' ')}",
         "sub": "#{token.account.identifier}",
         "token_type": "bearer"
@@ -89,7 +91,22 @@ shared_context 'token' do
     JSON
   end
 
-  def response_should_render_inactive_introspection
+  def client_credentials_token_introspection_should_be_rendered(token:)
+    response_should_be_200_ok_json
+    expect(token.account).to be_kind_of NullAccount
+    expect(last_response.body).to be_json_eql(<<-JSON)
+      {
+        "active": #{token.expires_at >= Time.now.utc ? 'true' : 'false'},
+        "exp": #{token.expires_at.to_i},
+        "grant_type": "client_credentials",
+        "scope": "#{token.scopes.map(&:name).join(' ')}",
+        "sub": "#{token.client.identifier}",
+        "token_type": "bearer"
+      }
+    JSON
+  end
+
+  def inactive_introspection_should_be_rendered
     response_should_be_200_ok_json
     expect(last_response.body).to be_json_eql(<<-JSON)
       {

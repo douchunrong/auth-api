@@ -21,7 +21,7 @@ describe 'Introspect token' do
         access_token: @token.token
       )
 
-      response_should_render_token_introspection token: @token
+      token_introspection_should_be_rendered token: @token
     end
 
     it 'responds that active is false with another access_token' do
@@ -35,7 +35,7 @@ describe 'Introspect token' do
         access_token: another_token.token
       )
 
-      response_should_render_inactive_introspection
+      inactive_introspection_should_be_rendered
     end
 
     it 'responds that active is false with token does not exist' do
@@ -44,7 +44,7 @@ describe 'Introspect token' do
         access_token: @token.token
       )
 
-      response_should_render_inactive_introspection
+      inactive_introspection_should_be_rendered
     end
 
     it 'responds 401 unauthorized with expired access_token' do
@@ -87,8 +87,7 @@ describe 'Introspect token' do
         target_token: @token.token,
         access_token: @token.token
       )
-
-      response_should_render_token_introspection token: @token
+      client_credentials_token_introspection_should_be_rendered token: @token
     end
   end
 end

@@ -22,7 +22,7 @@ class Account < ApplicationRecord
 
   def connect_id
     return parti.identifier if parti
-    return 'internal' if internal.name
+    return internal.name if internal
     return ''
   end
 

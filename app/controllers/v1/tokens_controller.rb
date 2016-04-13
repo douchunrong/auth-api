@@ -7,13 +7,23 @@ class V1::TokensController < ApplicationController
       token_model = AccessToken.find_by_token! token_param
       introspection = {
         active: token_model.expires_at >= Time.now,
-        connect_id: token_model.account.connect_id,
-        connect_type: token_model.account.connect_type,
         exp: token_model.expires_at.to_i,
         scope: token_model.scopes.map(&:name).join(' '),
-        sub: token_model.account.identifier,
         token_type: 'bearer'
       }
+      if token_model.account.kind_of? NullAccount
+        introspection.merge!(
+          grant_type: 'client_credentials',
+          sub: token_model.client.identifier,
+        )
+      else
+        introspection.merge!(
+          grant_type: 'authorization_code',
+          connect_id: token_model.account.connect_id,
+          connect_type: token_model.account.connect_type,
+          sub: token_model.account.identifier,
+        )
+      end
     else
       introspection = { active: false }
     end

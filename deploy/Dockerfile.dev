@@ -5,12 +5,11 @@ RUN tar -C /usr/local/bin -xzvf dockerize-linux-amd64-v0.2.0.tar.gz
 
 RUN gem install bundler
 
-WORKDIR /tmp
-COPY Gemfile Gemfile.lock /tmp/
-RUN bundle install
-
 RUN mkdir -p /parti/auth-api 
 WORKDIR /parti/auth-api
+
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
 
 COPY . ./
 
