@@ -23,7 +23,7 @@ users-api:
   environment:
     - DB_USER=postgres
     - RAILS_ENV=test
-  image: partixyz/users-api:0.2.1-1-g2c9254b
+  image: partixyz/users-api:0.2.1-8-g860fcc2
   links:
     - db:users-db
     - auth-api

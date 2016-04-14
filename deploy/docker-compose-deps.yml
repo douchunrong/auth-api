@@ -11,7 +11,7 @@ users-api:
     - USERS_API_CLIENT_SECRET
     - USERS_API_EXTERNAL_HOST=external.users-api
     - USERS_API_EXTERNAL_PORT=3031
-  image: partixyz/users-api:0.2.0-8-g5cdaf57
+  image: partixyz/users-api:0.2.1-8-g860fcc2
   links:
     - db:users-db
   ports:
