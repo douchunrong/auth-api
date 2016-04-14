@@ -1,44 +1,66 @@
 #! /usr/bin/env bash
 
 DOCKER_COMPOSE_FILE=deploy/docker-compose-dev.yml
+DEFAULT_SERVICE=auth-api
+DEPS_SERVICES=users-api
+
+auth-api() {
+  run-docker-compose run --rm auth-api "$@"
+}
 
 build() {
-  docker-compose -f $DOCKER_COMPOSE_FILE build
+  run-docker-compose build
 }
 
 bundle() {
-  docker-compose -f $DOCKER_COMPOSE_FILE run --rm auth-api bundle
+  users-api bundle
+}
+
+db() {
+  run-docker-compose run --rm db "$@"
 }
 
 db_setup() {
-  docker-compose -f $DOCKER_COMPOSE_FILE up -d db
-  docker-compose -f $DOCKER_COMPOSE_FILE run --rm auth-api dockerize -wait tcp://auth-db:5432
-  docker-compose -f $DOCKER_COMPOSE_FILE run --rm auth-api bin/rails db:setup
-  docker-compose -f $DOCKER_COMPOSE_FILE run --rm users-api bin/rails db:setup
+  run-docker-compose up -d db
+  auth-api dockerize -wait tcp://auth-db:5432
+  auth-api rails db:setup
+  users-api rails db:setup
 }
 
 deps() {
   db_setup
-  docker-compose -f $DOCKER_COMPOSE_FILE up -d users-api
+  run-docker-compose up -d $DEPS_SERVICES
 }
 
 down() {
-  docker-compose -f $DOCKER_COMPOSE_FILE down
+  run-docker-compose down
+}
+
+logs() {
+  run-docker-compose logs
 }
 
 ps() {
-  docker-compose -f $DOCKER_COMPOSE_FILE ps
+  run-docker-compose ps
 }
 
 rails() {
-  docker-compose -f $DOCKER_COMPOSE_FILE run --rm auth-api bin/rails "$@"
+  RAILS_LOG_TO_STDOUT= $DEFAULT_SERVICE rails "$@"
 }
 
 rspec() {
-  docker-compose -f $DOCKER_COMPOSE_FILE run --rm auth-api bin/rspec "$@"
+  RAILS_LOG_TO_STDOUT= $DEFAULT_SERVICE rspec "$@"
+}
+
+run-docker-compose() {
+  docker-compose -f $DOCKER_COMPOSE_FILE "$@"
 }
 
 up() {
   db_setup
-  docker-compose -f $DOCKER_COMPOSE_FILE up "$@"
+  run-docker-compose up "$@"
+}
+
+users-api() {
+  run-docker-compose run --rm users-api "$@"
 }
