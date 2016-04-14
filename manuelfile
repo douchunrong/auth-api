@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 
-DOCKER_COMPOSE_FILE=deploy/docker-compose-dev.yml
+DOCKER_COMPOSE_FILE=deploy/docker-compose-dev2.yml
 DEFAULT_SERVICE=auth-api
-DEPS_SERVICES=users-api
+DEPS_SERVICES=(auth-api users-api)
 
 auth-api() {
   run-docker-compose run --rm auth-api "$@"
@@ -28,8 +28,9 @@ db_setup() {
 }
 
 deps() {
+  export RAILS_LOG_TO_STDOUT=1
   db_setup
-  run-docker-compose up -d $DEPS_SERVICES
+  run-docker-compose up -d ${DEPS_SERVICES[*]}
 }
 
 down() {
@@ -37,11 +38,11 @@ down() {
 }
 
 logs() {
-  run-docker-compose logs
+  run-docker-compose logs "$@"
 }
 
 ps() {
-  run-docker-compose ps
+  run-docker-compose ps "$@"
 }
 
 rails() {
