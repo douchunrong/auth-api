@@ -5,6 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore Byebug command history file.
+.ackrc
 .byebug_history
 tags
 
