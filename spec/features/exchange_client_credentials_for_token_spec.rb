@@ -3,7 +3,7 @@ require 'rails_helper.rb'
 describe 'Exchanges client credentials for token' do
   include_context 'feature'
 
-  before :all do
+  before :each do
     @client = client_exists
   end
 

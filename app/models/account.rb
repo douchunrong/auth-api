@@ -14,6 +14,10 @@ class Account < ApplicationRecord
     super
   end
 
+  def user_info(*args)
+    (parti || internal).user_info(*args)
+  end
+
   def connect_type
     return 'parti' if parti
     return 'internal' if internal

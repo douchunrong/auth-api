@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       end
     end
     resources :authorizations, only: :create
+    get 'user-info', to: 'user_info#show'
     post 'introspect', to: 'tokens#introspect'
     get  'jwks', to: proc { |env| [200, {'Content-Type' => 'application/json'}, [IdToken.config[:jwk_set].to_json]] }
     post 'tokens', to: proc { |env| TokenEndpoint.new.call(env) }
