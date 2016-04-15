@@ -4,7 +4,7 @@ module PartiUrlHelper
   end
 
   def auth_api_host()
-    ENV['AUTH_API_HOST'] or 'localhost'
+    ENV['AUTH_API_HOST'] or 'auth-api'
   end
 
   def auth_api_port()
