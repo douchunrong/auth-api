@@ -25,22 +25,28 @@ before_install:
   - sudo apt-get -y install libpq-dev
   - apt-get -y install python-dev
   - sudo pip install -U docker-compose
+  - docker -v
+  - docker-compose -v
   - export APP_VERSION=$( git describe  --tags --long || echo ${COMMIT::12} )
 
 before_script:
-  - DOCKER_COMPOSE_FILE=deploy/docker-compose-deps.yml
-  - docker-compose -f $DOCKER_COMPOSE_FILE up -d db
-  - DB_CONTAINER=$( docker-compose -f $DOCKER_COMPOSE_FILE ps -q db )
-  - export DB_HOST=$( docker inspect --format '{{ .NetworkSettings.IPAddress }}' $DB_CONTAINER )
+  - DOCKER_COMPOSE_FILE=deploy/docker-compose-shippable.yml
+  - pwd
+  - ls
+  - docker-compose -f $DOCKER_COMPOSE_FILE run --rm echo-server pwd
+  - docker-compose -f $DOCKER_COMPOSE_FILE run --rm echo-server ls
+  - docker-compose -f $DOCKER_COMPOSE_FILE up -d echo-server
+  - docker ps
 
-  - docker-compose -f $DOCKER_COMPOSE_FILE run --rm users-api bin/rails db:setup
-  - docker-compose -f $DOCKER_COMPOSE_FILE up -d users-api
-  - USERS_API_CONTAINER=$( docker-compose -f $DOCKER_COMPOSE_FILE ps -q users-api )
-  - export USERS_API_HOST=$( docker inspect --format '{{ .NetworkSettings.IPAddress }}' $USERS_API_CONTAINER )
+  - docker-compose -f $DOCKER_COMPOSE_FILE up -d db
+  - docker-compose -f $DOCKER_COMPOSE_FILE run --rm auth-api dockerize -wait tcp://auth-db:5432
+  - docker-compose -f $DOCKER_COMPOSE_FILE run --rm auth-api rails db:setup
+  - docker-compose -f $DOCKER_COMPOSE_FILE run --rm users-api rails db:setup
+  - docker-compose -f $DOCKER_COMPOSE_FILE up -d auth-api users-api
+  - docker ps
 
 script:
-  - RAILS_ENV=test bin/rails db:setup
-  - RALIS_ENV=test bin/rails spec
+  - docker-compose -f $DOCKER_COMPOSE_FILE run auth-api rails spec
 
 after_success:
   - ./deploy/build-docker-image.bash
