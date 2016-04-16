@@ -1,0 +1,13 @@
+FROM partixyz/docker-ruby
+
+RUN mkdir -p /parti/auth-api
+WORKDIR /parti/auth-api
+
+COPY Gemfile Gemfile.lock ./
+RUN gem install bundler && bundle install --without development test --deployment --jobs 20 --retry 5
+
+COPY . ./
+RUN rm -rf test/ spec/
+
+EXPOSE 3030
+CMD ["deploy/docker-cmd.sh"]
