@@ -1,0 +1,10 @@
+#!/bin/bash
+echo -e "\e[45m---------------------------"
+echo -e "\e[95mThis is the pre-push test"
+echo -e "\e[45m---------------------------"
+
+VERSION=$( git describe --tags --long )
+IMAGE_NAME=${IMAGE_NAME/%latest/$VERSION}
+env
+
+exit 0

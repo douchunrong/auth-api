@@ -1,0 +1,25 @@
+#!/bin/bash
+echo -e "\e[43m---------------------------"
+echo -e "\e[93mThis is the pre-test test"
+echo -e "\e[43m---------------------------"
+
+export COMPOSE_FILE=docker-compose-cloud.test.yml
+
+docker -v
+docker-compose -v
+docker-compose up -d db
+
+echo "Wait database starts"
+docker-compose run --rm auth-api dockerize -wait tcp://auth-db:5432
+echo "Setup auth-db"
+docker-compose run --rm auth-api bin/rails db:setup
+echo "Setup users-db"
+docker-compose run --rm users-api bin/rails db:setup
+
+echo "Start users-api and sut"
+docker-compose up -d auth-api users-api
+
+echo -e "\e[93mThe pre-test is done"
+echo -e "\e[43m---------------------------"
+
+exit 0
