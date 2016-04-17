@@ -2,4 +2,11 @@
 echo -e "\e[45m---------------------------"
 echo -e "\e[95mThis is the post-push test"
 echo -e "\e[45m---------------------------"
+
+VERSION=$( git describe --tags --long )
+VERSION_TAG=${IMAGE_NAME/%latest/$VERSION}
+
+docker tag this $VERSION_TAG
+docker push $VERSION_TAG
+
 exit 0

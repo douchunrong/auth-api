@@ -5,3 +5,5 @@ db/*.sqlite3
 config/projections.json
 deploy
 !deploy/docker-cmd.sh
+docker-compose-cloud.test.yml
+hooks
