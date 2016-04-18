@@ -15,7 +15,7 @@ class DiscoveriesController < ApplicationController
       issuer: IdToken.config[:issuer],
       authorization_endpoint: ENV['AUTHORIZATION_ENDPOINT'],
       token_endpoint: v1_tokens_url,
-      userinfo_endpoint: 'http://user_info.url',
+      userinfo_endpoint: v1_user_info_url,
       jwks_uri: IdToken.config[:jwks_uri],
       scopes_supported: Scope.all.collect(&:name),
       response_types_supported: Client.available_response_types,
