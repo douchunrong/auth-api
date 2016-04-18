@@ -24,6 +24,8 @@ services:
     ports:
       - 5432:5432
   users-api:
+    depends_on:
+      - auth-api
     environment:
       - DB_USER=postgres
       - RAILS_ENV=test

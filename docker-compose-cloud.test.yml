@@ -32,6 +32,8 @@ services:
   db:
     image: postgres:9.4
   users-api:
+    depends_on:
+      - auth-api
     environment:
       - DB_USER=postgres
       - RAILS_ENV=test
