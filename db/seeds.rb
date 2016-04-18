@@ -21,10 +21,10 @@ unless internal_account
   internal_account.save!
 end
 
-unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_API_TEST_CLIENT_NAME
+unless Client.find_by user_account: internal_account, name: Client::AUTH_API_TEST_CLIENT_NAME
   client = Client.create!(
     user_account: internal_account,
-    name: Client::PARTI_AUTH_API_TEST_CLIENT_NAME,
+    name: Client::AUTH_API_TEST_CLIENT_NAME,
     redirect_uris: ''
   )
   client.update(
@@ -33,9 +33,9 @@ unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_A
   )
 end
 
-unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_UI_CLIENT_NAME
+unless Client.find_by user_account: internal_account, name: Client::AUTH_UI_CLIENT_NAME
   client = Client.create!(
-    name: Client::PARTI_AUTH_UI_CLIENT_NAME,
+    name: Client::AUTH_UI_CLIENT_NAME,
     redirect_uris: [],
     user_account: internal_account,
   )
@@ -45,9 +45,9 @@ unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_U
   )
 end
 
-unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_UI_TEST_CLIENT_NAME
+unless Client.find_by user_account: internal_account, name: Client::AUTH_UI_TEST_CLIENT_NAME
   client = Client.create!(
-    name: Client::PARTI_AUTH_UI_TEST_CLIENT_NAME,
+    name: Client::AUTH_UI_TEST_CLIENT_NAME,
     redirect_uris: '',
     user_account: internal_account,
   )
@@ -57,12 +57,14 @@ unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_U
   )
 end
 
-unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_EXAMPLE_CLIENT_NAME
+unless Client.find_by user_account: internal_account, name: Client::AUTH_EXAMPLE_CLIENT_NAME
   client = Client.create!(
-    name: Client::PARTI_AUTH_EXAMPLE_CLIENT_NAME,
+    name: Client::AUTH_EXAMPLE_CLIENT_NAME,
     redirect_uris: [
-      'http://auth-rp.dev.parti.xyz:5000/auth/parti/callback',
-      'http://auth-rp.dev.parti.xyz:5000/parti_callback'
+      'http://rp.auth.parti.xyz/auth/parti/callback',
+      'http://rp.auth.parti.xyz/parti_callback',
+      'http://rp.auth.parti.dev/auth/parti/callback',
+      'http://rp.auth.parti.dev/parti_callback'
     ],
     user_account: internal_account,
   )
@@ -72,9 +74,9 @@ unless Client.find_by user_account: internal_account, name: Client::PARTI_AUTH_E
   )
 end
 
-unless Client.find_by user_account: internal_account, name: Client::PARTI_USERS_API_TEST_CLIENT_NAME
+unless Client.find_by user_account: internal_account, name: Client::USERS_API_TEST_CLIENT_NAME
   client = Client.create!(
-    name: Client::PARTI_USERS_API_TEST_CLIENT_NAME,
+    name: Client::USERS_API_TEST_CLIENT_NAME,
     redirect_uris: [],
     user_account: internal_account,
   )
@@ -84,9 +86,9 @@ unless Client.find_by user_account: internal_account, name: Client::PARTI_USERS_
   )
 end
 
-unless Client.find_by user_account: internal_account, name: Client::PARTI_USERS_UI_CLIENT_NAME
+unless Client.find_by user_account: internal_account, name: Client::USERS_UI_CLIENT_NAME
   client = Client.create!(
-    name: Client::PARTI_USERS_UI_CLIENT_NAME,
+    name: Client::USERS_UI_CLIENT_NAME,
     redirect_uris: [],
     user_account: internal_account,
   )
@@ -96,15 +98,49 @@ unless Client.find_by user_account: internal_account, name: Client::PARTI_USERS_
   )
 end
 
-unless Client.find_by user_account: internal_account, name: Client::PARTI_USERS_UI_TEST_CLIENT_NAME
+unless Client.find_by user_account: internal_account, name: Client::USERS_UI_TEST_CLIENT_NAME
   client = Client.create!(
-    name: Client::PARTI_USERS_UI_TEST_CLIENT_NAME,
+    name: Client::USERS_UI_TEST_CLIENT_NAME,
     redirect_uris: [],
     user_account: internal_account,
   )
   client.update(
     identifier: 'a248e649e8563f0d8a1eaa255f8c05ae',
     secret: 'd5b1378e5854309c1d6e76d7e2c77dbee4bb3f1cab745f7e94cbc8370dea2460'
+  )
+end
+
+unless Client.find_by user_account: internal_account, name: Client::CANOE_WEB_CLIENT_NAME
+  client = Client.create!(
+    name: Client::CANOE_WEB_CLIENT_NAME,
+    redirect_uris: [
+      'http://canoe.parti.xyz/auth/parti/callback',
+      'https://canoe.parti.xyz/auth/parti/callback',
+      'http://canoe.parti.dev/auth/parti/callback',
+      'https://canoe.parti.dev/auth/parti/callback'
+    ],
+    user_account: internal_account,
+  )
+  client.update(
+    identifier: 'cee1f144d7cc141ef72e64f53020d6c2',
+    secret: '83a387c214903b5335001876421f538f7153ce5fc051cb0ae213ca1355900f6d'
+  )
+end
+
+unless Client.find_by user_account: internal_account, name: Client::CANOE_MOBILE_CLIENT_NAME
+  client = Client.create!(
+    name: Client::CANOE_MOBILE_CLIENT_NAME,
+    redirect_uris: [
+      'http://canoe.parti.xyz/auth/parti/callback',
+      'https://canoe.parti.xyz/auth/parti/callback',
+      'http://canoe.parti.dev/auth/parti/callback',
+      'https://canoe.parti.dev/auth/parti/callback'
+    ],
+    user_account: internal_account,
+  )
+  client.update(
+    identifier: '22505d317d96111d414f20161f3956f6',
+    secret: '12a45288f61339459405c630376fd237928b236eab968d62861c18a3c7049217'
   )
 end
 

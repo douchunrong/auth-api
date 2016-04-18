@@ -31,7 +31,7 @@ shared_context 'client' do
     account = Account.joins(:internal).find_by!(
       connect_internals: { name: ConnectInternal::INTERNAL_NAME }
     )
-    account.clients.find_by! name: Client::PARTI_AUTH_API_TEST_CLIENT_NAME
+    account.clients.find_by! name: Client::AUTH_API_TEST_CLIENT_NAME
   end
 
   def response_should_render_created_client

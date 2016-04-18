@@ -1,11 +1,13 @@
 class Client < ApplicationRecord
-  PARTI_AUTH_API_TEST_CLIENT_NAME = 'Parti Auth API Test'
-  PARTI_AUTH_EXAMPLE_CLIENT_NAME = 'Parti Auth Example'
-  PARTI_AUTH_UI_CLIENT_NAME = 'Parti Auth UI'
-  PARTI_AUTH_UI_TEST_CLIENT_NAME = 'Parti Auth UI Test'
-  PARTI_USERS_API_TEST_CLIENT_NAME = 'Parti Users API Test'
-  PARTI_USERS_UI_TEST_CLIENT_NAME = 'Parti Users UI Test'
-  PARTI_USERS_UI_CLIENT_NAME = 'Parti Users UI'
+  AUTH_API_TEST_CLIENT_NAME = 'Auth API Test'
+  AUTH_EXAMPLE_CLIENT_NAME = 'Auth Example'
+  AUTH_UI_CLIENT_NAME = 'Auth UI'
+  AUTH_UI_TEST_CLIENT_NAME = 'Auth UI Test'
+  USERS_API_TEST_CLIENT_NAME = 'Users API Test'
+  USERS_UI_TEST_CLIENT_NAME = 'Users UI Test'
+  USERS_UI_CLIENT_NAME = 'Users UI'
+  CANOE_WEB_CLIENT_NAME = 'Canoe Web'
+  CANOE_MOBILE_CLIENT_NAME = 'Canoe Mobile'
 
   belongs_to :user_account
   has_many :test_accounts, inverse_of: :client
