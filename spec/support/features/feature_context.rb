@@ -2,6 +2,7 @@ shared_context 'feature' do
   include_context 'auth_code_test'
   include_context 'authorization'
   include_context 'client'
+  include_context 'client_test'
   include_context 'parti_user'
   include_context 'rack_test'
   include_context 'token'

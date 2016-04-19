@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   if Rails.env.test?
     namespace :test do
       resources :auth_codes, only: [:create], path: 'auth-codes'
+      resources :clients, only: [:create]
     end
   end
 
