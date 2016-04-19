@@ -144,6 +144,18 @@ unless Client.find_by user_account: internal_account, name: Client::CANOE_MOBILE
   )
 end
 
+unless Client.find_by user_account: internal_account, name: Client::OMNIAUTH_TEST_CLIENT_NAME
+  client = Client.create!(
+    name: Client::OMNIAUTH_TEST_CLIENT_NAME,
+    redirect_uris: [],
+    user_account: internal_account,
+  )
+  client.update(
+    identifier: '736697c090acec5781c35c189a22de67',
+    secret: 'b4b778e9c58bc37b416537eb96453d471277980bbcea87fb65a68e6de63d2100'
+  )
+end
+
 ['openid', 'profile', 'email', 'create_client'].each do |name|
   unless Scope.find_by name: name
     Scope.create! name: name
