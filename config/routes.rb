@@ -6,6 +6,12 @@ Rails.application.routes.draw do
   get '.well-known/openid-configuration', to: 'discoveries#openid_configuration'
   get '.well-known/webfinger', to: 'discoveries#webfinger'
 
+  if Rails.env.test?
+    namespace :test do
+      resources :auth_codes, only: [:create], path: 'auth-codes'
+    end
+  end
+
   namespace :v1 do
     resources :clients, only: :create do
       resources :test_accounts, path: 'test-accounts' do

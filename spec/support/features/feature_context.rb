@@ -1,4 +1,5 @@
 shared_context 'feature' do
+  include_context 'auth_code_test'
   include_context 'authorization'
   include_context 'client'
   include_context 'parti_user'
