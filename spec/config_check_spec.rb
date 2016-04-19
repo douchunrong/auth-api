@@ -38,5 +38,11 @@ describe 'ENV variables', smoke: true do
       ENV['AUTH_API_EXTERNAL_PORT'] = '12345'
       expect(IdToken.config[:issuer]).to match(%r{^http://issue-host:12345})
     end
+
+    it 'removes http 80 port from issuer' do
+      ENV['AUTH_API_EXTERNAL_HOST'] = 'issue-host'
+      ENV['AUTH_API_EXTERNAL_PORT'] = '80'
+      expect(IdToken.config[:issuer]).to match(%r{^http://issue-host})
+    end
   end
 end

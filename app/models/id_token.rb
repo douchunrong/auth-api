@@ -60,6 +60,10 @@ class IdToken < ApplicationRecord
         cert = OpenSSL::X509::Certificate.new(
           Base64.decode64(ENV['AUTH_API_CERTIFICATE_BASE64'])
         )
+        issuer_uri = URI.parse @config[:issuer]
+        issuer_uri.port = nil if issuer_uri.scheme == 'http' && issuer_uri.port == 80
+        issuer_uri.port = nil if issuer_uri.scheme == 'https' && issuer_uri.port == 443
+        @config[:issuer] = issuer_uri.to_s
         @config[:kid] = :default
         @config[:public_key] = cert.public_key
         @config[:private_key] = private_key
