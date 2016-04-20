@@ -36,7 +36,7 @@ class IdToken < ApplicationRecord
 
   class << self
     def decode(id_token)
-      OpenIDConnect::ResponseObject::IdToken.decode id_token, config[:public_key]
+      PartiAuth::IdToken.decode id_token, config[:public_key]
     rescue => e
       logger.error e.message
       nil

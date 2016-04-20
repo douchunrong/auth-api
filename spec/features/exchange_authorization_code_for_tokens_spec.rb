@@ -4,7 +4,8 @@ describe 'Exchanges authorization code for tokens' do
   include_context 'feature'
 
   before :each do
-    @account = user_account_exists
+    @user = parti_user_exists
+    @account = user_account_exists parti: { identifier: @user[:identifier] }
     @client = client_exists
     @authorization = authorization_code_is_granted(
       account: @account,
@@ -27,6 +28,7 @@ describe 'Exchanges authorization code for tokens' do
       access_token: response[:access_token],
       account: @account,
       client: @client,
+      email: @user[:email],
       id_token: response[:id_token],
       nonce: 'nonce-random',
       scope: Scope::OPENID
