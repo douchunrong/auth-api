@@ -3,7 +3,7 @@ services:
   auth-api:
     build:
       context: ..
-      dockerfile: deploy/Dockerfile.dev
+      dockerfile: Dockerfile.test
     environment:
       - AUTH_API_CERTIFICATE_BASE64
       - AUTH_API_PRIVATE_KEY_BASE64_1
