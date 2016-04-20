@@ -16,7 +16,7 @@ class Test::AuthCodesController < ApplicationController
     scopes = scope_names.map { |name| Scope.find_by_name(name) }.compact
     authorization.scopes << scopes
 
-    render status: 200, json: authorization.code
+    render status: 200, json: authorization
   end
 
   def create_params

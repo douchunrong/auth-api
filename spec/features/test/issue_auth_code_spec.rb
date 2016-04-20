@@ -22,6 +22,8 @@ describe 'issue auth code for test' do
     account = ConnectParti.find_by_identifier!('user-identifier').account
     expect(account).to be_present
 
+    expect(response[:account][:identifier]).to eq(account.identifier)
+
     auth_code_should_be_issued(
       account: account,
       client: audience,

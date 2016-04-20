@@ -8,7 +8,10 @@ shared_context 'auth_code_test' do
 
   def auth_code_should_be_rendered
     response_should_be_200_ok
-    { code: last_response.body }
+    auth_code_created = Authorization.createds.last
+    auth_code_json = ActiveModel::SerializableResource.new(auth_code_created).to_json
+    expect(last_response.body).to be_json_eql(auth_code_json)
+    JSON.parse(last_response.body, symbolize_names: true)
   end
 
   def auth_code_should_be_issued(code:, **attrs)
