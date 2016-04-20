@@ -15,10 +15,12 @@ class ConnectParti < ApplicationRecord
     res = oauth_token.get users_api_url("/v1/users/#{identifier}")
     case res.status
       when 200
-        user_info = JSON.parse(res.body).with_indifferent_access
+        user_info = JSON.parse(res.body, symbolize_names: true)
         user_info.slice(:email)
       when 401
         raise UsersApi::Unauthorized
+      when 404
+        raise UsersApi::NotFound
       else
         raise UsersApi::Unknown
     end

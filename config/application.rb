@@ -27,7 +27,7 @@ module AuthApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.eager_load_paths += %W(#{config.root}/lib)
 
     if ENV['RAILS_LOG_TO_STDOUT'].present?
       config.logger = Logger.new STDOUT

@@ -13,10 +13,20 @@ class TokenEndpoint
         access_token = authorization.access_token
         res.access_token = access_token.to_bearer_token
         if access_token.accessible?(Scope.find_by_name(Scope::OPENID))
-          res.id_token = access_token.account.id_tokens.create!(
-            client: access_token.client,
-            nonce: authorization.nonce
-          ).to_jwt
+          user_info = access_token.account.user_info access_token: access_token
+          id_token = PartiAuth::IdToken.new(
+            {
+              aud: access_token.client.identifier,
+              exp: 1.hours.from_now.to_i,
+              iat: Time.now.utc.to_i,
+              iss: IdToken.config[:issuer],
+              nonce: authorization.nonce,
+              sub: access_token.account.identifier
+            }.merge user_info.slice(:email, :nickname)
+          )
+          res.id_token = id_token.to_jwt(IdToken.config[:private_key]) do |jwt|
+            jwt.kid = IdToken.config[:kid]
+          end
         end
       when :client_credentials
         res.access_token = client.access_tokens.create(account: NullAccount.take).to_bearer_token

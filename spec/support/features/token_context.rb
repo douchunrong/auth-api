@@ -124,6 +124,7 @@ shared_context 'token' do
 
     id_token = IdToken.decode params[:id_token]
     expect(id_token.aud).to eq(params[:client].identifier)
+    expect(id_token.email).to eq(params[:email])
     expect(id_token.exp.to_i).to be > Time.now.to_i
     expect(id_token.iss).to eq(IdToken.config[:issuer])
     expect(id_token.nonce).to eq(params[:nonce])
