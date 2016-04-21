@@ -2,7 +2,8 @@
 
 set -e
 
-dockerize -wait tcp://auth-db:5432
+DB_HOST=${DB_HOST:-auth-db}
+dockerize -wait tcp://${DB_HOST}:5432
 
 if [ -f /volume/shared/is_leader ]; then
     bin/rake db:migrate
